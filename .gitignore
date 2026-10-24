@@ -1,0 +1,17 @@
+# Rust
+/target
+Cargo.lock
+
+# Node / Next.js
+node_modules
+/.next/
+/out/
+build
+
+# Environment & Local Secrets
+.env
+.env*.local
+
+# OS Files
+.DS_Store
+Thumbs.db
