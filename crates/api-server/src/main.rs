@@ -17,7 +17,9 @@ use routes::dental::{
     list_lab_orders_handler, upsert_odontogram_handler, verify_lab_order_handler,
 };
 use routes::queue::{
-    call_next_handler, check_in_handler, create_token_handler, get_snapshot_handler,
+    call_next_handler, cascade_delay_handler, check_in_handler, create_token_handler,
+    diagnostic_pause_handler, emergency_triage_handler, get_snapshot_handler,
+    list_audit_events_handler, pre_med_hold_handler, record_payment_handler,
 };
 use routes::ws::ws_handler;
 use state::AppState;
@@ -62,12 +64,36 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             post(check_in_handler),
         )
         .route(
+            "/api/v1/sessions/:session_id/tokens/:token_id/payment",
+            post(record_payment_handler),
+        )
+        .route(
+            "/api/v1/sessions/:session_id/tokens/:token_id/pre-med-hold",
+            post(pre_med_hold_handler),
+        )
+        .route(
+            "/api/v1/sessions/:session_id/emergency-triage",
+            post(emergency_triage_handler),
+        )
+        .route(
             "/api/v1/sessions/:session_id/chairs/:chair_id/call-next",
             post(call_next_handler),
         )
         .route(
             "/api/v1/sessions/:session_id/snapshot",
             get(get_snapshot_handler),
+        )
+        .route(
+            "/api/v1/sessions/:session_id/cascade-delay",
+            post(cascade_delay_handler),
+        )
+        .route(
+            "/api/v1/sessions/:session_id/chairs/:chair_id/diagnostic-pause",
+            post(diagnostic_pause_handler),
+        )
+        .route(
+            "/api/v1/clinics/:clinic_id/audit-events",
+            get(list_audit_events_handler),
         )
         // Dental & Operatory Routes
         .route(

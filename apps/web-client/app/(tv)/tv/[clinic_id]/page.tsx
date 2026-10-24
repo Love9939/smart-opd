@@ -179,6 +179,41 @@ function WaitingRoomTvContent() {
         u.rate = 0.92;
         window.speechSynthesis.speak(u);
       }
+    } else if (lastEvent.event_type === 'TOKEN_CHECKED_IN') {
+      const { token_display, patient_first_name, assigned_waiting_seat, estimated_wait_secs } = lastEvent.payload;
+      setWaitingTokens((prev) => {
+        if (prev.some((t) => t.token_display === token_display)) return prev;
+        return [
+          ...prev,
+          {
+            token_display,
+            patient_name: patient_first_name,
+            seat_code: assigned_waiting_seat || 'Lobby Waiting',
+            est_wait_mins: Math.round(estimated_wait_secs / 60) || 6,
+            category: token_display.startsWith('E') ? 'EMERGENCY' : token_display.startsWith('P') ? 'PRIORITY' : 'REGULAR',
+          },
+        ];
+      });
+    } else if (lastEvent.event_type === 'STERILIZATION_STARTED') {
+      const { chair_code, duration_mins } = lastEvent.payload;
+      setActiveChairs((prev) =>
+        prev.map((c) =>
+          c.chair_code === chair_code
+            ? { ...c, state: 'STERILIZATION_LOCK', unlocks_in_secs: duration_mins * 60, active_token: undefined }
+            : c
+        )
+      );
+    } else if (lastEvent.event_type === 'ANESTHESIA_HOLD_STARTED') {
+      const { token_display, chair_code, ready_in_mins } = lastEvent.payload;
+      setActiveChairs((prev) =>
+        prev.map((c) =>
+          c.chair_code === chair_code
+            ? { ...c, state: 'ANESTHESIA_HOLD', active_token: token_display, anesthesia_mins_left: ready_in_mins }
+            : c
+        )
+      );
+    } else if (lastEvent.event_type === 'EMERGENCY_TRIAGE_ALERT') {
+      clinicalChime.playTokenCallChime();
     }
   }, [lastEvent, ttsAudioEnabled]);
 

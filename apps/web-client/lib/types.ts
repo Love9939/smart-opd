@@ -74,6 +74,10 @@ export interface QueueToken {
   };
   chief_complaint?: string;
   rx_image_url?: string;
+  family_cluster_id?: string;
+  family_cluster_name?: string;
+  fee_charged_inr?: number;
+  amount_paid_inr?: number;
 }
 
 export interface DentalOdontogramRecord {
@@ -122,6 +126,41 @@ export interface WebSocketEvent {
   event_id: string;
   clinic_id: string;
   timestamp: string;
-  event_type: 'TOKEN_CALLED' | 'TOKEN_CHECKED_IN' | 'ANESTHESIA_HOLD_STARTED' | 'STERILIZATION_STARTED' | 'STERILIZATION_COMPLETED' | 'CROWD_ALERT';
+  event_type:
+    | 'TOKEN_CALLED'
+    | 'TOKEN_CHECKED_IN'
+    | 'ANESTHESIA_HOLD_STARTED'
+    | 'STERILIZATION_STARTED'
+    | 'STERILIZATION_COMPLETED'
+    | 'CROWD_ALERT'
+    | 'CASCADE_DELAY_ALERT'
+    | 'DIAGNOSTIC_HOLD_STARTED'
+    | 'EMERGENCY_TRIAGE_ALERT'
+    | 'PRE_MED_HOLD_STARTED'
+    | 'AUDIT_EVENT_LOGGED';
   payload: any;
 }
+
+export interface TokenAuditEvent {
+  id: number;
+  clinic_id: string;
+  token_id: string;
+  actor_id: string;
+  actor_role: string;
+  action_type: string;
+  old_payload: Record<string, any> | null;
+  new_payload: Record<string, any>;
+  created_at: string;
+}
+
+export interface TreatmentPlanLedger {
+  treatment_plan_id: string;
+  total_estimated_inr: number;
+  total_paid_inr: number;
+  balance_due_inr: number;
+  total_sittings_planned: number;
+  sittings_completed: number;
+  is_fully_settled: boolean;
+}
+
+

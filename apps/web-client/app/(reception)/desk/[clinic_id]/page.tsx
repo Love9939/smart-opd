@@ -5,6 +5,8 @@ import { useParams } from 'next/navigation';
 import { WaitingRoomSeatGrid } from '@/components/seat-grid/WaitingRoomSeatGrid';
 import { AbdmScanShareModal } from '@/components/abdm/AbdmScanShareModal';
 import { PaymentModal } from '@/components/billing/PaymentModal';
+import { ImmutableAuditModal } from '@/components/audit/ImmutableAuditModal';
+import { DentalLabGateModal } from '@/components/lab/DentalLabGateModal';
 import { QueueToken, WaitingSeat, DentalLabOrder } from '@/lib/types';
 import { ReconnectingWebSocketClient, useLiveClinicStore } from '@/lib/ws-client';
 import { queueOfflineMutation, syncOfflineOutbox } from '@/lib/offline-outbox';
@@ -28,6 +30,9 @@ import {
   QrCode,
   DollarSign,
   Smartphone,
+  Users,
+  ShieldCheck,
+  Clock,
 } from 'lucide-react';
 
 function ReceptionistDeskContent() {
@@ -48,7 +53,14 @@ function ReceptionistDeskContent() {
 
   // Modals
   const [isAbdmModalOpen, setIsAbdmModalOpen] = useState(false);
+  const [isAuditModalOpen, setIsAuditModalOpen] = useState(false);
+  const [isLabModalOpen, setIsLabModalOpen] = useState(false);
   const [activePaymentToken, setActivePaymentToken] = useState<QueueToken | null>(null);
+
+  // Family Cluster & Late Grace States
+  const [isFamilyCluster, setIsFamilyCluster] = useState(false);
+  const [familyMemberName, setFamilyMemberName] = useState('');
+  const [isLateArrival, setIsLateArrival] = useState(false);
 
   // Active Tokens Roster
   const [tokens, setTokens] = useState<QueueToken[]>([
@@ -195,6 +207,7 @@ function ReceptionistDeskContent() {
     }
 
     const preferredSeatType = isElderlyOrPregnant ? 'PriorityElderlyPregnant' : 'Standard';
+    const effectiveCategory = isLateArrival ? 'LateGrace' : category;
 
     // Allocate physical seat
     let allocatedSeatCode: string | null = null;
@@ -203,39 +216,82 @@ function ReceptionistDeskContent() {
       seatIdx = seats.findIndex((s) => s.occupied_by_token === null && s.seat_type === 'Standard');
     }
 
-    const prefix = category === 'Emergency' ? 'E' : isElderlyOrPregnant ? 'P' : 'A';
-    const newTokenDisplay = `${prefix}-${String(tokens.length + 1).padStart(2, '0')}`;
+    const prefix = effectiveCategory === 'Emergency' ? 'E' : isElderlyOrPregnant ? 'P' : effectiveCategory === 'LateGrace' ? 'G' : 'A';
+    const count = tokens.length + 1;
+    const hasFamily = isFamilyCluster && familyMemberName.trim().length > 0;
+    const clusterId = hasFamily ? `cluster-${Date.now()}` : undefined;
+
+    const newTokenDisplay = `${prefix}-${String(count).padStart(2, '0')}${hasFamily ? 'A' : ''}`;
     const newTokenId = `t-${Date.now()}`;
+
+    let updatedSeats = [...seats];
 
     if (seatIdx !== -1) {
       allocatedSeatCode = seats[seatIdx].seat_code;
-      const updatedSeats = [...seats];
       updatedSeats[seatIdx].occupied_by_token = newTokenId;
-      setSeats(updatedSeats);
     }
 
-    const newToken: QueueToken = {
+    const primaryToken: QueueToken = {
       token_id: newTokenId,
       session_id: defaultSessionId,
       token_display: newTokenDisplay,
       patient_id: `p-${Date.now()}`,
       patient_name: patientName,
-      category,
+      category: effectiveCategory,
       status: 'CheckedIn',
       required_seat_type: preferredSeatType,
       assigned_waiting_seat: allocatedSeatCode,
-      planned_duration_secs: category === 'Emergency' ? 600 : 360,
+      planned_duration_secs: effectiveCategory === 'Emergency' ? 600 : 360,
       requires_sterilization: false,
       lab_qc_verified: true,
       estimated_wait_secs: (tokens.length + 1) * 360,
       booked_at: new Date().toISOString(),
       checked_in_at: new Date().toISOString(),
+      family_cluster_id: clusterId,
+      family_cluster_name: hasFamily ? `${patientName} & ${familyMemberName}` : undefined,
     };
 
-    setTokens((prev) => [newToken, ...prev]);
+    let newTokensList = [primaryToken];
+
+    // Secondary Family Member
+    let secondarySeatCode: string | null = null;
+    if (hasFamily) {
+      const secondarySeatIdx = updatedSeats.findIndex((s) => s.occupied_by_token === null && s.seat_type === 'Standard');
+      const secondaryTokenId = `t-${Date.now() + 1}`;
+      const secondaryTokenDisplay = `${prefix}-${String(count).padStart(2, '0')}B`;
+
+      if (secondarySeatIdx !== -1) {
+        secondarySeatCode = updatedSeats[secondarySeatIdx].seat_code;
+        updatedSeats[secondarySeatIdx].occupied_by_token = secondaryTokenId;
+      }
+
+      const secondaryToken: QueueToken = {
+        token_id: secondaryTokenId,
+        session_id: defaultSessionId,
+        token_display: secondaryTokenDisplay,
+        patient_id: `p-${Date.now() + 1}`,
+        patient_name: `${familyMemberName} (Family)`,
+        category: effectiveCategory,
+        status: 'CheckedIn',
+        required_seat_type: 'Standard',
+        assigned_waiting_seat: secondarySeatCode,
+        planned_duration_secs: 360,
+        requires_sterilization: false,
+        lab_qc_verified: true,
+        estimated_wait_secs: (tokens.length + 2) * 360,
+        booked_at: new Date().toISOString(),
+        checked_in_at: new Date().toISOString(),
+        family_cluster_id: clusterId,
+        family_cluster_name: `${patientName} & ${familyMemberName}`,
+      };
+      newTokensList.push(secondaryToken);
+    }
+
+    setSeats(updatedSeats);
+    setTokens((prev) => [...newTokensList, ...prev]);
 
     // Play clinical audio chime for emergencies
-    if (category === 'Emergency') {
+    if (effectiveCategory === 'Emergency') {
       clinicalChime.playTokenCallChime();
     }
 
@@ -246,15 +302,30 @@ function ReceptionistDeskContent() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           patient_name: patientName,
-          category,
+          category: effectiveCategory,
           required_seat_type: preferredSeatType,
           lab_qc_verified: true,
+          cluster_suffix: hasFamily ? 'A' : undefined,
         }),
       }).catch(() => {});
+
+      if (hasFamily) {
+        fetch(`http://localhost:8080/api/v1/sessions/${defaultSessionId}/tokens`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            patient_name: `${familyMemberName} (Family)`,
+            category: effectiveCategory,
+            required_seat_type: 'Standard',
+            lab_qc_verified: true,
+            cluster_suffix: 'B',
+          }),
+        }).catch(() => {});
+      }
     } catch {}
 
     // Save mutation to offline outbox for resilience
-    await queueOfflineMutation('CHECK_IN', `/api/v1/sessions/${defaultSessionId}/tokens`, newToken);
+    await queueOfflineMutation('CHECK_IN', `/api/v1/sessions/${defaultSessionId}/tokens`, primaryToken);
 
     // Auto-print thermal token receipt
     thermalPrinter.printToken({
@@ -264,14 +335,21 @@ function ReceptionistDeskContent() {
       patientName,
       phone,
       assignedSeat: allocatedSeatCode || 'Lobby Waiting',
-      category,
-      estWaitMins: Math.round(newToken.estimated_wait_secs / 60) || 6,
+      category: effectiveCategory,
+      estWaitMins: Math.round(primaryToken.estimated_wait_secs / 60) || 6,
       qrCodeUrl: 'https://smartopd.in/q/demo',
-      bookedAt: newToken.booked_at,
+      bookedAt: primaryToken.booked_at,
     }).catch(() => {});
 
-    setNotification(`✓ Token ${newTokenDisplay} printed! Assigned Seat: ${allocatedSeatCode || 'Lobby Waiting'}`);
+    setNotification(
+      hasFamily
+        ? `✓ Family Cluster Checked-in: ${newTokenDisplay} & ${prefix}-${String(count).padStart(2, '0')}B (Seats: ${allocatedSeatCode}, ${secondarySeatCode})`
+        : `✓ Token ${newTokenDisplay} printed! Assigned Seat: ${allocatedSeatCode || 'Lobby Waiting'}`
+    );
     setPatientName('');
+    setFamilyMemberName('');
+    setIsFamilyCluster(false);
+    setIsLateArrival(false);
     setAbhaAddress(null);
     setIsElderlyOrPregnant(false);
     setRequiresLabWork(false);
@@ -312,12 +390,29 @@ function ReceptionistDeskContent() {
           </div>
           <div>
             <h1 className="text-base font-bold text-white leading-tight">Front-Desk Reception Console</h1>
-            <p className="text-[11px] text-slate-400">SmartOPD & DentalFlow High-Speed POS Check-in</p>
           </div>
         </div>
 
-        {/* Connectivity, Bluetooth Printer & ABDM Actions */}
-        <div className="flex items-center gap-3">
+        {/* Connectivity, Bluetooth Printer, Audit, Lab Gate & ABDM Actions */}
+        <div className="flex items-center gap-2.5">
+          {/* Audit Ledger & Pilferage Shield Modal Button */}
+          <button
+            onClick={() => setIsAuditModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+          >
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+            <span>Audit & Pilferage</span>
+          </button>
+
+          {/* Dental Lab Gate Modal Button */}
+          <button
+            onClick={() => setIsLabModalOpen(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+          >
+            <PackageCheck className="w-3.5 h-3.5 text-purple-400" />
+            <span>Lab Gate ({labOrders.filter((o) => o.status !== 'QcVerified').length})</span>
+          </button>
+
           {/* ABDM Scan & Share M1 Button */}
           <button
             onClick={() => setIsAbdmModalOpen(true)}
@@ -444,6 +539,57 @@ function ReceptionistDeskContent() {
                   checked={isElderlyOrPregnant}
                   onChange={(e) => setIsElderlyOrPregnant(e.target.checked)}
                   className="w-4 h-4 accent-rose-500 rounded cursor-pointer"
+                />
+              </div>
+
+              {/* Family Cluster Registration (Arriving Together) */}
+              <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl space-y-2.5">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                      <Users className="w-4 h-4 text-cyan-400" />
+                      <span>Family Cluster (Arriving Together)</span>
+                    </div>
+                    <div className="text-[11px] text-slate-400">Generates linked #14A & #14B tokens & adjacent seats</div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    checked={isFamilyCluster}
+                    onChange={(e) => setIsFamilyCluster(e.target.checked)}
+                    className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
+                  />
+                </div>
+
+                {isFamilyCluster && (
+                  <div className="pt-2 border-t border-slate-800 space-y-2 animate-fadeIn">
+                    <label className="block text-[11px] font-semibold text-cyan-300">
+                      Secondary Family Member (Spouse / Child):
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Meera Kumar (Spouse, Age 34)"
+                      value={familyMemberName}
+                      onChange={(e) => setFamilyMemberName(e.target.value)}
+                      className="w-full bg-slate-900 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* Late Grace Interleaving Checkbox */}
+              <div className="flex items-center justify-between p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
+                <div>
+                  <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                    <Clock className="w-3.5 h-3.5 text-amber-400" />
+                    <span>Late Grace Arrival (&gt;15m past slot)</span>
+                  </div>
+                  <div className="text-[11px] text-slate-400">Interleaves at active + 2 (punctual patients not bumped)</div>
+                </div>
+                <input
+                  type="checkbox"
+                  checked={isLateArrival}
+                  onChange={(e) => setIsLateArrival(e.target.checked)}
+                  className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
                 />
               </div>
 
@@ -646,6 +792,21 @@ function ReceptionistDeskContent() {
           }}
         />
       )}
+
+      {/* Immutable Audit Ledger Modal */}
+      <ImmutableAuditModal
+        clinicId={clinicId}
+        isOpen={isAuditModalOpen}
+        onClose={() => setIsAuditModalOpen(false)}
+      />
+
+      {/* Dental Lab Gate Modal */}
+      <DentalLabGateModal
+        orders={labOrders}
+        isOpen={isLabModalOpen}
+        onClose={() => setIsLabModalOpen(false)}
+        onVerifyOrder={handleVerifyLab}
+      />
     </div>
   );
 }

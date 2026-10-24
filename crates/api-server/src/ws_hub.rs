@@ -62,6 +62,37 @@ pub enum ClinicWebSocketPayload {
         occupancy_pct: u8,
         message: String,
     },
+    #[serde(rename = "CASCADE_DELAY_ALERT")]
+    CascadeDelayAlert {
+        delay_mins: i16,
+        reason: String,
+        affected_tokens_count: usize,
+    },
+    #[serde(rename = "DIAGNOSTIC_HOLD_STARTED")]
+    DiagnosticHoldStarted {
+        token_display: String,
+        procedure_type: String,
+        pause_mins: u32,
+    },
+    #[serde(rename = "PRE_MED_HOLD_STARTED")]
+    PreMedHoldStarted {
+        token_display: String,
+        sedation_mins: u32,
+    },
+    #[serde(rename = "EMERGENCY_TRIAGE_ALERT")]
+    EmergencyTriageAlert {
+        token_display: String,
+        patient_name: String,
+        complaint: String,
+        cascade_delay_mins: i16,
+    },
+    #[serde(rename = "AUDIT_EVENT_LOGGED")]
+    AuditEventLogged {
+        action_type: String,
+        actor_role: String,
+        token_display: String,
+        is_tamper_alert: bool,
+    },
     #[serde(rename = "SESSION_STATE_SYNC")]
     SessionStateSync {
         snapshot: serde_json::Value,
