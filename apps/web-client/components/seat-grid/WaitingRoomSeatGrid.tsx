@@ -20,64 +20,68 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
   const getSeatIcon = (type: WaitingSeatType) => {
     switch (type) {
       case 'PriorityElderlyPregnant':
-        return <Heart className="w-4 h-4 text-rose-400" />;
+        return <Heart className="w-3.5 h-3.5 text-rose-400" />;
       case 'Wheelchair':
-        return <Accessibility className="w-4 h-4 text-cyan-400" />;
+        return <Accessibility className="w-3.5 h-3.5 text-cyan-400" />;
       case 'NumbingLounge':
-        return <ShieldAlert className="w-4 h-4 text-purple-400" />;
+        return <ShieldAlert className="w-3.5 h-3.5 text-amber-400" />;
       case 'IsolationFever':
-        return <AlertTriangle className="w-4 h-4 text-amber-400" />;
+        return <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />;
       default:
-        return <Armchair className="w-4 h-4 text-slate-400" />;
+        return <Armchair className="w-3.5 h-3.5 text-slate-400" />;
     }
   };
 
-  const getSeatBadgeColor = (type: WaitingSeatType, isOccupied: boolean) => {
+  const getSeatStyle = (type: WaitingSeatType, isOccupied: boolean) => {
     if (isOccupied) {
-      return 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-amber-500/10';
+      return 'bg-amber-500/10 text-amber-200 border-amber-500/30 hover:border-amber-400/60 shadow-[0_2px_12px_rgba(245,158,11,0.08)]';
     }
     switch (type) {
       case 'PriorityElderlyPregnant':
-        return 'bg-rose-500/15 text-rose-300 border-rose-500/30 hover:bg-rose-500/25';
+        return 'bg-rose-500/10 text-rose-200 border-rose-500/25 hover:border-rose-400/50 hover:bg-rose-500/15';
       case 'Wheelchair':
-        return 'bg-cyan-500/15 text-cyan-300 border-cyan-500/30 hover:bg-cyan-500/25';
+        return 'bg-cyan-500/10 text-cyan-200 border-cyan-500/25 hover:border-cyan-400/50 hover:bg-cyan-500/15';
       case 'NumbingLounge':
-        return 'bg-purple-500/15 text-purple-300 border-purple-500/30 hover:bg-purple-500/25';
+        return 'bg-amber-500/10 text-amber-200 border-amber-500/25 hover:border-amber-400/50 hover:bg-amber-500/15';
       default:
-        return 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25';
+        return 'bg-emerald-500/10 text-emerald-200 border-emerald-500/25 hover:border-emerald-400/50 hover:bg-emerald-500/15';
     }
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
+    <div className="glass-panel rounded-[28px] p-6 shadow-2xl relative overflow-hidden">
       {/* Header with Occupancy Meter */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-5 border-b border-slate-800/80 pb-4">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-5 border-b border-white/[0.06] pb-4">
         <div>
-          <div className="flex items-center gap-2">
-            <Armchair className="w-5 h-5 text-teal-400" />
-            <h3 className="text-lg font-bold text-white tracking-wide">Waiting Lobby Physical Seats</h3>
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+              <Armchair className="w-4 h-4" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-slate-100 tracking-tight">Waiting Lobby Physical Graph</h3>
+              <p className="text-xs text-slate-400">
+                Directed spatial allocator & priority zoning (A-01, P-01, N-01)
+              </p>
+            </div>
           </div>
-          <p className="text-xs text-slate-400 mt-0.5">
-            Real-time physical seat graph & priority zoning (A-01, P-01, N-01)
-          </p>
         </div>
 
-        {/* Occupancy Indicator */}
-        <div className="flex items-center gap-3 bg-slate-950/80 border border-slate-800 rounded-xl px-4 py-2">
+        {/* Occupancy Indicator with Tabular Metric */}
+        <div className="flex items-center gap-3.5 glass-panel-nested rounded-2xl px-4 py-2.5 border border-white/[0.08]">
           <div className="text-right">
-            <span className="text-xs text-slate-400 uppercase font-medium">Lobby Occupancy</span>
-            <div className="text-base font-extrabold text-white flex items-center justify-end gap-1.5">
+            <span className="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">Lobby Load</span>
+            <div className="text-sm font-extrabold text-white flex items-center justify-end gap-1.5 tabular-nums">
               <span>{occupancyPct}%</span>
               <span
                 className={`w-2 h-2 rounded-full ${
-                  isPeakCrowd ? 'bg-rose-500 animate-ping' : 'bg-emerald-400'
+                  isPeakCrowd ? 'bg-rose-500 animate-pulse' : 'bg-emerald-400'
                 }`}
               />
             </div>
           </div>
-          <div className="w-16 bg-slate-800 rounded-full h-2 overflow-hidden">
+          <div className="w-20 bg-slate-900/80 rounded-full h-2 p-0.5 border border-white/[0.05] overflow-hidden">
             <div
-              className={`h-full transition-all duration-500 ${
+              className={`h-full rounded-full transition-all duration-500 ${
                 occupancyPct > 80 ? 'bg-rose-500' : occupancyPct > 50 ? 'bg-amber-400' : 'bg-emerald-400'
               }`}
               style={{ width: `${Math.min(100, occupancyPct)}%` }}
@@ -88,55 +92,57 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
 
       {/* Peak Crowd Alert Banner */}
       {isPeakCrowd && (
-        <div className="mb-4 flex items-center gap-3 p-3.5 bg-rose-500/15 border border-rose-500/40 rounded-xl text-rose-200 text-xs font-medium animate-pulse">
-          <AlertTriangle className="w-5 h-5 text-rose-400 shrink-0" />
+        <div className="mb-4 flex items-center gap-3 p-3.5 bg-rose-500/10 border border-rose-500/30 rounded-[18px] text-rose-200 text-xs font-medium">
+          <AlertTriangle className="w-4 h-4 text-rose-400 shrink-0" />
           <div>
             <strong className="font-bold text-rose-100">Peak Crowd Mode Active ({occupancyPct}% Occupancy):</strong>{' '}
-            Lobby is exceeding 80% capacity. TV display has instructed patients: Kindly limit to 1 attendant per patient.
+            Lobby exceeds 80% capacity. Automated guidance: Kindly limit to 1 attendant per patient.
           </div>
         </div>
       )}
 
-      {/* Seat Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-3">
+      {/* Seat Grid with Concentric 18px Radii */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-8 gap-2.5">
         {seats.map((seat) => {
           const isOccupied = seat.occupied_by_token !== null;
           return (
             <button
               key={seat.seat_id}
               onClick={() => onSeatClick && onSeatClick(seat)}
-              className={`group relative flex flex-col items-center justify-center p-3 rounded-xl border transition-all duration-200 text-center ${getSeatBadgeColor(
+              className={`group relative flex flex-col items-center justify-center p-3 rounded-[18px] border transition-all duration-150 text-center ${getSeatStyle(
                 seat.seat_type,
                 isOccupied
-              )} ${isOccupied ? 'cursor-pointer hover:border-amber-400' : 'cursor-pointer'}`}
+              )} ${isOccupied ? 'cursor-pointer' : 'cursor-pointer'}`}
             >
-              <div className="flex items-center justify-between w-full mb-1.5 px-0.5">
+              <div className="flex items-center justify-between w-full mb-1 px-0.5">
                 {getSeatIcon(seat.seat_type)}
                 <span className="text-[10px] font-mono tracking-wider font-semibold opacity-75">
                   {seat.zone_name.split(' ')[0]}
                 </span>
               </div>
 
-              <div className="text-base font-black tracking-tight my-0.5">{seat.seat_code}</div>
+              <div className="text-sm font-extrabold tracking-tight my-0.5 tabular-nums text-white">
+                {seat.seat_code}
+              </div>
 
-              <div className="mt-1 flex items-center gap-1 text-[11px] font-medium">
+              <div className="mt-1 flex items-center gap-1 text-[10px] font-medium">
                 {isOccupied ? (
                   <span className="flex items-center gap-1 text-amber-300">
-                    <UserCheck className="w-3 h-3" />
+                    <UserCheck className="w-2.5 h-2.5" />
                     <span>Occupied</span>
                   </span>
                 ) : (
-                  <span className="text-emerald-400/80 group-hover:text-emerald-300">Available</span>
+                  <span className="text-emerald-400/80 group-hover:text-emerald-300">Free</span>
                 )}
               </div>
 
               {seat.seat_type === 'PriorityElderlyPregnant' && (
-                <div className="absolute -top-1.5 -right-1 px-1.5 py-0.2 bg-rose-600 text-[9px] font-bold text-white rounded-full uppercase shadow">
+                <div className="absolute -top-1.5 -right-1 px-1.5 py-0.2 bg-rose-500 text-[8px] font-bold text-white rounded-full uppercase shadow-sm">
                   Priority
                 </div>
               )}
               {seat.seat_type === 'NumbingLounge' && (
-                <div className="absolute -top-1.5 -right-1 px-1.5 py-0.2 bg-purple-600 text-[9px] font-bold text-white rounded-full uppercase shadow">
+                <div className="absolute -top-1.5 -right-1 px-1.5 py-0.2 bg-amber-500 text-[8px] font-bold text-slate-950 rounded-full uppercase shadow-sm">
                   Dental LA
                 </div>
               )}
@@ -145,27 +151,27 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
         })}
       </div>
 
-      {/* Legend */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mt-5 pt-3 border-t border-slate-800 text-xs text-slate-400">
+      {/* Legend with Glass Badges */}
+      <div className="flex flex-wrap items-center justify-between gap-4 mt-5 pt-3.5 border-t border-white/[0.06] text-xs text-slate-400">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block" />
-            <span>Available</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
+            <span className="text-slate-300 text-[11px]">Available</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block" />
-            <span>Occupied</span>
+            <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
+            <span className="text-slate-300 text-[11px]">Occupied</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Heart className="w-3.5 h-3.5 text-rose-400" />
-            <span>P-Zone (Elderly/Pregnant)</span>
+            <Heart className="w-3 h-3 text-rose-400" />
+            <span className="text-slate-300 text-[11px]">P-Zone (Priority)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <ShieldAlert className="w-3.5 h-3.5 text-purple-400" />
-            <span>N-Zone (Dental Anesthesia Lounge)</span>
+            <ShieldAlert className="w-3 h-3 text-amber-400" />
+            <span className="text-slate-300 text-[11px]">N-Zone (Dental Numbing)</span>
           </div>
         </div>
-        <span className="font-mono text-[11px] text-slate-500">Auto-allocated on Check-in</span>
+        <span className="font-mono text-[10px] text-slate-500">Auto-allocated via Tokio Graph</span>
       </div>
     </div>
   );

@@ -33,6 +33,7 @@ import {
   Users,
   ShieldCheck,
   Clock,
+  Activity,
 } from 'lucide-react';
 
 function ReceptionistDeskContent() {
@@ -328,18 +329,20 @@ function ReceptionistDeskContent() {
     await queueOfflineMutation('CHECK_IN', `/api/v1/sessions/${defaultSessionId}/tokens`, primaryToken);
 
     // Auto-print thermal token receipt
-    thermalPrinter.printToken({
-      clinicName: 'SmartOPD & DentalFlow',
-      doctorName: 'Dr. Sneha Rao & Dr. Arjun Reddy',
-      tokenDisplay: newTokenDisplay,
-      patientName,
-      phone,
-      assignedSeat: allocatedSeatCode || 'Lobby Waiting',
-      category: effectiveCategory,
-      estWaitMins: Math.round(primaryToken.estimated_wait_secs / 60) || 6,
-      qrCodeUrl: 'https://smartopd.in/q/demo',
-      bookedAt: primaryToken.booked_at,
-    }).catch(() => {});
+    thermalPrinter
+      .printToken({
+        clinicName: 'SmartOPD & DentalFlow',
+        doctorName: 'Dr. Sneha Rao & Dr. Arjun Reddy',
+        tokenDisplay: newTokenDisplay,
+        patientName,
+        phone,
+        assignedSeat: allocatedSeatCode || 'Lobby Waiting',
+        category: effectiveCategory,
+        estWaitMins: Math.round(primaryToken.estimated_wait_secs / 60) || 6,
+        qrCodeUrl: 'https://smartopd.in/q/demo',
+        bookedAt: primaryToken.booked_at,
+      })
+      .catch(() => {});
 
     setNotification(
       hasFamily
@@ -358,7 +361,9 @@ function ReceptionistDeskContent() {
   // 1-Click QC Verify Lab Order
   const handleVerifyLab = (orderId: string) => {
     setLabOrders((prev) =>
-      prev.map((o) => (o.id === orderId ? { ...o, status: 'QcVerified', received_verified_at: new Date().toISOString() } : o))
+      prev.map((o) =>
+        o.id === orderId ? { ...o, status: 'QcVerified', received_verified_at: new Date().toISOString() } : o
+      )
     );
     setNotification('✓ Dental Lab Parcel QC_VERIFIED & Approved for Patient Check-in');
   };
@@ -381,45 +386,58 @@ function ReceptionistDeskContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans">
-      {/* Top Navbar */}
-      <header className="border-b border-slate-800 bg-slate-900/80 backdrop-blur-md px-6 py-3.5 flex items-center justify-between sticky top-0 z-40">
+    <div className="min-h-screen bg-[#0B0C0E] text-slate-100 flex flex-col font-sans relative overflow-x-hidden selection:bg-emerald-500/30 selection:text-emerald-200">
+      {/* Ambient Organic Blurred Refraction Orbs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-emerald-500/10 blur-[110px]" />
+        <div className="absolute top-1/3 -right-32 w-96 h-96 rounded-full bg-amber-500/08 blur-[110px]" />
+        <div className="absolute -bottom-32 left-1/3 w-96 h-96 rounded-full bg-cyan-500/08 blur-[110px]" />
+      </div>
+
+      {/* Top Navbar Header with Frosted Glass */}
+      <header className="glass-panel border-x-0 border-t-0 rounded-none backdrop-blur-xl px-6 py-3.5 flex items-center justify-between sticky top-0 z-40 relative">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/20">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-slate-950 font-black shadow-md shadow-emerald-500/20 text-sm">
             SO
           </div>
           <div>
-            <h1 className="text-base font-bold text-white leading-tight">Front-Desk Reception Console</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-bold text-white tracking-tight">Front-Desk Command Console</h1>
+              <span className="glass-pill px-2 py-0.5 text-[10px] font-mono text-emerald-300">
+                POS Mode
+              </span>
+            </div>
+            <p className="text-[11px] text-slate-400">Dr. Sneha Rao & Dr. Arjun Reddy • Session Active</p>
           </div>
         </div>
 
         {/* Connectivity, Bluetooth Printer, Audit, Lab Gate & ABDM Actions */}
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           {/* Audit Ledger & Pilferage Shield Modal Button */}
           <button
             onClick={() => setIsAuditModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-950/40 hover:bg-emerald-900/50 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-semibold transition-all cursor-pointer"
           >
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Audit & Pilferage</span>
+            <span>Audit Ledger</span>
           </button>
 
           {/* Dental Lab Gate Modal Button */}
           <button
             onClick={() => setIsLabModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-950/40 hover:bg-purple-900/50 text-purple-300 border border-purple-500/40 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 rounded-xl text-xs font-semibold transition-all cursor-pointer"
           >
-            <PackageCheck className="w-3.5 h-3.5 text-purple-400" />
-            <span>Lab Gate ({labOrders.filter((o) => o.status !== 'QcVerified').length})</span>
+            <PackageCheck className="w-3.5 h-3.5 text-amber-400" />
+            <span className="tabular-nums">Lab Gate ({labOrders.filter((o) => o.status !== 'QcVerified').length})</span>
           </button>
 
           {/* ABDM Scan & Share M1 Button */}
           <button
             onClick={() => setIsAbdmModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-orange-500/20 to-emerald-500/20 hover:from-orange-500/30 hover:to-emerald-500/30 text-emerald-300 border border-emerald-500/40 rounded-xl text-xs font-bold transition-all shadow-sm cursor-pointer"
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-teal-500/10 hover:bg-teal-500/20 text-teal-300 border border-teal-500/30 rounded-xl text-xs font-semibold transition-all cursor-pointer"
           >
-            <QrCode className="w-3.5 h-3.5 text-orange-400" />
-            <span>ABDM Scan & Share</span>
+            <QrCode className="w-3.5 h-3.5 text-teal-400" />
+            <span>ABHA M1 (F3)</span>
           </button>
 
           {/* Web Bluetooth Thermal Printer Connect */}
@@ -430,61 +448,70 @@ function ReceptionistDeskContent() {
                 .then((name) => setNotification(`✓ Connected to ${name}`))
                 .catch(() => alert('Web Bluetooth: Make sure printer is powered ON and paired.'));
             }}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 rounded-xl text-xs font-semibold transition-all cursor-pointer"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 glass-panel-nested hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] rounded-xl text-xs font-medium transition-all cursor-pointer"
           >
-            <Printer className="w-3.5 h-3.5 text-cyan-400" />
-            <span>58mm Printer</span>
+            <Printer className="w-3.5 h-3.5 text-slate-400" />
+            <span>58mm ESC/POS</span>
           </button>
 
+          {/* Connection Status Pill */}
           <div
-            className={`flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold border ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border ${
               isConnected
-                ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
-                : 'bg-amber-500/15 text-amber-300 border-amber-500/30'
+                ? 'bg-emerald-500/10 text-emerald-300 border-emerald-500/25'
+                : 'bg-amber-500/10 text-amber-300 border-amber-500/25'
             }`}
           >
-            {isConnected ? <Wifi className="w-3.5 h-3.5" /> : <WifiOff className="w-3.5 h-3.5" />}
-            <span>{isConnected ? 'Sub-5ms Live Stream' : isOfflineMode ? 'Offline Resilient' : 'Connecting...'}</span>
+            {isConnected ? <Wifi className="w-3 h-3 text-emerald-400" /> : <WifiOff className="w-3 h-3 text-amber-400" />}
+            <span className="tabular-nums">
+              {isConnected ? '<5ms Live Fanout' : isOfflineMode ? 'IndexedDB Offline' : 'Connecting...'}
+            </span>
           </div>
         </div>
       </header>
 
-      {/* Floating Notification */}
+      {/* Floating Notification Banner */}
       {notification && (
-        <div className="bg-gradient-to-r from-cyan-900 to-slate-900 border-b border-cyan-500/40 px-6 py-2.5 text-xs font-medium text-cyan-200 flex items-center justify-between animate-fadeIn">
-          <span>{notification}</span>
-          <button onClick={() => setNotification(null)} className="text-cyan-400 hover:text-white font-bold ml-4">
+        <div className="bg-emerald-950/60 border-b border-emerald-500/30 px-6 py-2.5 text-xs font-medium text-emerald-200 flex items-center justify-between backdrop-blur-md relative z-30">
+          <span className="flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{notification}</span>
+          </span>
+          <button onClick={() => setNotification(null)} className="text-emerald-400 hover:text-white font-bold ml-4">
             ✕
           </button>
         </div>
       )}
 
-      {/* Main Grid */}
-      <main className="flex-1 p-6 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
+      {/* Main Asymmetric Bento Grid */}
+      <main className="flex-1 p-6 max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10">
         {/* Left Column: Walk-in Check-in POS & Dental Lab Gate (5 Cols) */}
         <div className="lg:col-span-5 space-y-6">
-          {/* Quick Check-in POS */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
-            <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-cyan-400" />
-                <h2 className="text-base font-bold text-white">Walk-In Patient Check-In</h2>
+          {/* Quick Check-in POS Card */}
+          <div className="glass-panel rounded-[28px] p-6 shadow-2xl relative overflow-hidden">
+            <div className="flex items-center justify-between mb-5 border-b border-white/[0.06] pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-teal-500/15 border border-teal-500/30 flex items-center justify-center text-teal-400">
+                  <UserPlus className="w-4 h-4" />
+                </div>
+                <div>
+                  <h2 className="text-base font-bold text-white tracking-tight">Walk-In Patient Check-In</h2>
+                  <p className="text-[11px] text-slate-400">Direct admission & thermal ticket issuance</p>
+                </div>
               </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={() => setIsAbdmModalOpen(true)}
-                  className="text-[10px] font-mono text-emerald-400 bg-emerald-500/15 px-2 py-0.5 rounded-full border border-emerald-500/30 hover:bg-emerald-500/25"
-                >
-                  ⚡ ABHA M1 Scan
-                </button>
-              </div>
+              <button
+                type="button"
+                onClick={() => setIsAbdmModalOpen(true)}
+                className="text-[11px] font-mono text-emerald-300 bg-emerald-500/10 px-2.5 py-1 rounded-full border border-emerald-500/30 hover:bg-emerald-500/20 transition-all cursor-pointer"
+              >
+                ⚡ ABHA Scan
+              </button>
             </div>
 
             <form onSubmit={handleCheckIn} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  Patient Full Name <span className="text-cyan-400">*</span>
+                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                  Patient Full Name <span className="text-emerald-400 font-mono">(F1) *</span>
                 </label>
                 <input
                   id="patient-name-input"
@@ -493,11 +520,11 @@ function ReceptionistDeskContent() {
                   value={patientName}
                   onChange={(e) => setPatientName(e.target.value)}
                   placeholder="e.g. Ramesh Kumar"
-                  className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-medium"
+                  className="w-full bg-[#111318]/90 border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 transition-all font-medium"
                 />
                 {abhaAddress && (
-                  <div className="mt-1 flex items-center gap-1.5 text-[11px] text-emerald-400 font-mono">
-                    <CheckCircle2 className="w-3 h-3" />
+                  <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-emerald-400 font-mono">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
                     <span>Linked ABHA: {abhaAddress}</span>
                   </div>
                 )}
@@ -505,23 +532,23 @@ function ReceptionistDeskContent() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Household Mobile</label>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Household Mobile</label>
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white font-mono"
+                    className="w-full bg-[#111318]/90 border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white font-mono focus:outline-none focus:border-emerald-400"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">Category</label>
+                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as any)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-400"
+                    className="w-full bg-[#111318]/90 border border-white/[0.08] rounded-xl px-3.5 py-2 text-xs text-white focus:outline-none focus:border-emerald-400"
                   >
                     <option value="Regular">Regular Walk-In</option>
-                    <option value="Emergency">🚨 Acute Emergency</option>
+                    <option value="Emergency">🚨 Acute Emergency (F2)</option>
                     <option value="LabReturn">Lab / X-Ray Return</option>
                     <option value="LateGrace">Late Grace Arrival</option>
                   </select>
@@ -529,10 +556,10 @@ function ReceptionistDeskContent() {
               </div>
 
               {/* Priority Checkbox (Elderly/Pregnant -> Priority Zone) */}
-              <div className="flex items-center justify-between p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06]">
                 <div>
                   <div className="text-xs font-bold text-white">Priority Elderly / Pregnant / Wheelchair</div>
-                  <div className="text-[11px] text-slate-400">Auto-allocates physical seat in P-Zone</div>
+                  <div className="text-[11px] text-slate-400">Allocates designated P-Zone physical seating</div>
                 </div>
                 <input
                   type="checkbox"
@@ -543,11 +570,11 @@ function ReceptionistDeskContent() {
               </div>
 
               {/* Family Cluster Registration (Arriving Together) */}
-              <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl space-y-2.5">
+              <div className="p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06] space-y-2.5">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <Users className="w-4 h-4 text-cyan-400" />
+                      <Users className="w-4 h-4 text-emerald-400" />
                       <span>Family Cluster (Arriving Together)</span>
                     </div>
                     <div className="text-[11px] text-slate-400">Generates linked #14A & #14B tokens & adjacent seats</div>
@@ -556,13 +583,13 @@ function ReceptionistDeskContent() {
                     type="checkbox"
                     checked={isFamilyCluster}
                     onChange={(e) => setIsFamilyCluster(e.target.checked)}
-                    className="w-4 h-4 accent-cyan-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-emerald-500 rounded cursor-pointer"
                   />
                 </div>
 
                 {isFamilyCluster && (
-                  <div className="pt-2 border-t border-slate-800 space-y-2 animate-fadeIn">
-                    <label className="block text-[11px] font-semibold text-cyan-300">
+                  <div className="pt-2 border-t border-white/[0.06] space-y-2 animate-fadeIn">
+                    <label className="block text-[11px] font-semibold text-emerald-300">
                       Secondary Family Member (Spouse / Child):
                     </label>
                     <input
@@ -570,14 +597,14 @@ function ReceptionistDeskContent() {
                       placeholder="e.g. Meera Kumar (Spouse, Age 34)"
                       value={familyMemberName}
                       onChange={(e) => setFamilyMemberName(e.target.value)}
-                      className="w-full bg-slate-900 border border-cyan-500/40 rounded-lg p-2 text-xs text-white placeholder-slate-500 focus:outline-none"
+                      className="w-full bg-[#111318] border border-emerald-500/30 rounded-xl p-2.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400"
                     />
                   </div>
                 )}
               </div>
 
               {/* Late Grace Interleaving Checkbox */}
-              <div className="flex items-center justify-between p-3 bg-slate-950/70 border border-slate-800 rounded-xl">
+              <div className="flex items-center justify-between p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06]">
                 <div>
                   <div className="text-xs font-bold text-white flex items-center gap-1.5">
                     <Clock className="w-3.5 h-3.5 text-amber-400" />
@@ -594,32 +621,32 @@ function ReceptionistDeskContent() {
               </div>
 
               {/* Dental Prosthodontic Lab Gate Check */}
-              <div className="p-3 bg-slate-950/70 border border-slate-800 rounded-xl space-y-2">
+              <div className="p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06] space-y-2">
                 <div className="flex items-center justify-between">
                   <div>
                     <div className="text-xs font-bold text-white flex items-center gap-1.5">
-                      <PackageCheck className="w-4 h-4 text-purple-400" />
+                      <PackageCheck className="w-4 h-4 text-amber-400" />
                       <span>Prosthodontic Lab Dependency Gate</span>
                     </div>
-                    <div className="text-[11px] text-slate-400">Check if visit requires crown/bridge from lab</div>
+                    <div className="text-[11px] text-slate-400">Check if visit requires crown/bridge delivery</div>
                   </div>
                   <input
                     type="checkbox"
                     checked={requiresLabWork}
                     onChange={(e) => setRequiresLabWork(e.target.checked)}
-                    className="w-4 h-4 accent-purple-500 rounded cursor-pointer"
+                    className="w-4 h-4 accent-amber-500 rounded cursor-pointer"
                   />
                 </div>
 
                 {requiresLabWork && (
-                  <div className="pt-2 border-t border-slate-800/80">
-                    <label className="block text-[11px] font-semibold text-purple-300 mb-1">
+                  <div className="pt-2 border-t border-white/[0.06]">
+                    <label className="block text-[11px] font-semibold text-amber-300 mb-1">
                       Link Verified External Lab Case:
                     </label>
                     <select
                       value={selectedLabOrderId}
                       onChange={(e) => setSelectedLabOrderId(e.target.value)}
-                      className="w-full bg-slate-900 border border-purple-500/40 rounded-lg p-2 text-xs text-white"
+                      className="w-full bg-[#111318] border border-amber-500/30 rounded-xl p-2 text-xs text-white focus:outline-none"
                     >
                       {labOrders.map((o) => (
                         <option key={o.id} value={o.id}>
@@ -633,7 +660,7 @@ function ReceptionistDeskContent() {
 
               <button
                 type="submit"
-                className="w-full py-3 bg-gradient-to-r from-cyan-500 to-teal-400 hover:from-cyan-400 hover:to-teal-300 text-slate-950 font-extrabold rounded-xl shadow-lg shadow-cyan-500/20 text-sm transition-all cursor-pointer flex items-center justify-center gap-2"
+                className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-[18px] shadow-lg shadow-emerald-500/20 text-sm transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]"
               >
                 <span>Check-In & Print 58mm Token</span>
                 <ArrowRight className="w-4 h-4" />
@@ -642,14 +669,19 @@ function ReceptionistDeskContent() {
           </div>
 
           {/* Dental Lab Orders Inspection & QC Verification Widget */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
-            <div className="flex items-center justify-between mb-3 border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <PackageCheck className="w-5 h-5 text-purple-400" />
-                <h3 className="text-sm font-bold text-white">External Lab Parcel QC Gate</h3>
+          <div className="glass-panel rounded-[28px] p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4 border-b border-white/[0.06] pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                  <PackageCheck className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white tracking-tight">External Lab Parcel QC Gate</h3>
+                  <p className="text-[11px] text-slate-400">Hard verification prior to patient entry</p>
+                </div>
               </div>
-              <span className="text-[10px] font-mono text-purple-300 bg-purple-500/20 px-2 py-0.5 rounded-full">
-                Hard Verification Gate
+              <span className="glass-pill px-2.5 py-0.5 text-[10px] font-mono text-amber-300">
+                Lab-Gate Active
               </span>
             </div>
 
@@ -657,24 +689,24 @@ function ReceptionistDeskContent() {
               {labOrders.map((order) => {
                 const isVerified = order.status === 'QcVerified';
                 return (
-                  <div key={order.id} className="p-3.5 bg-slate-950 rounded-xl border border-slate-800">
+                  <div key={order.id} className="p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06]">
                     <div className="flex items-start justify-between gap-2 mb-1.5">
                       <span className="text-xs font-bold text-white">{order.prosthesis_type}</span>
                       <span
                         className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
                           isVerified
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                            : 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
                         }`}
                       >
                         {isVerified ? 'QC_VERIFIED' : 'PENDING_VERIFICATION'}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400 mb-2">Vendor: {order.lab_vendor_name}</div>
+                    <div className="text-[11px] text-slate-400 mb-2.5">Vendor: {order.lab_vendor_name}</div>
                     {!isVerified && (
                       <button
                         onClick={() => handleVerifyLab(order.id)}
-                        className="w-full py-1.5 bg-purple-600 hover:bg-purple-500 text-white font-bold rounded-lg text-xs transition-all shadow"
+                        className="w-full py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs transition-all shadow cursor-pointer"
                       >
                         ✓ Mark Parcel Received & QC Verified
                       </button>
@@ -692,45 +724,50 @@ function ReceptionistDeskContent() {
           <WaitingRoomSeatGrid seats={seats} occupancyPct={occupancyPct} isPeakCrowd={isPeakCrowd} />
 
           {/* Active Queue Tokens Roster */}
-          <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
-            <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
-                <Layers className="w-5 h-5 text-teal-400" />
-                <h3 className="text-base font-bold text-white">Active Queue Tokens Roster</h3>
+          <div className="glass-panel rounded-[28px] p-6 shadow-2xl">
+            <div className="flex items-center justify-between mb-4 border-b border-white/[0.06] pb-3">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                  <Layers className="w-4 h-4" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white tracking-tight">Active Queue Tokens Roster</h3>
+                  <p className="text-[11px] text-slate-400">Live sequential & priority interleaved roster</p>
+                </div>
               </div>
-              <span className="text-xs font-mono text-slate-400">{tokens.length} Patients Active</span>
+              <span className="text-xs font-mono text-slate-400 tabular-nums">{tokens.length} Active in Flow</span>
             </div>
 
-            <div className="space-y-2.5 max-h-[420px] overflow-y-auto pr-1">
+            <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
               {tokens.map((token) => (
                 <div
                   key={token.token_id}
-                  className="p-3.5 bg-slate-950/80 rounded-xl border border-slate-800 hover:border-slate-700 flex items-center justify-between gap-4 transition-all"
+                  className="p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06] hover:border-white/[0.12] flex items-center justify-between gap-4 transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="w-12 h-10 rounded-lg bg-slate-900 border border-cyan-500/40 flex items-center justify-center font-mono font-black text-cyan-300 text-sm">
+                    <span className="w-12 h-10 rounded-xl bg-[#111318] border border-emerald-500/30 flex items-center justify-center font-mono font-black text-emerald-300 text-sm tabular-nums">
                       {token.token_display}
                     </span>
                     <div>
                       <div className="text-sm font-bold text-white flex items-center gap-2">
                         <span>{token.patient_name}</span>
                         {token.category === 'Emergency' && (
-                          <span className="bg-rose-500/20 text-rose-300 text-[10px] font-bold px-1.5 py-0.2 rounded border border-rose-500/40">
+                          <span className="bg-rose-500/20 text-rose-300 text-[10px] font-bold px-1.5 py-0.5 rounded border border-rose-500/30">
                             EMERGENCY
                           </span>
                         )}
                       </div>
                       <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
-                        <span>Status: {token.status}</span>
+                        <span className="text-emerald-400 font-medium">● {token.status}</span>
                         <span>•</span>
-                        <span>Est. Wait: ~{Math.round(token.estimated_wait_secs / 60)}m</span>
+                        <span className="tabular-nums">Est. Wait: ~{Math.round(token.estimated_wait_secs / 60)}m</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     {token.assigned_waiting_seat && (
-                      <span className="bg-slate-900 text-teal-300 font-mono text-xs px-2.5 py-1 rounded-lg border border-slate-800">
+                      <span className="bg-[#111318] text-slate-300 font-mono text-xs px-2.5 py-1 rounded-xl border border-white/[0.08] tabular-nums">
                         Seat {token.assigned_waiting_seat}
                       </span>
                     )}
@@ -738,7 +775,7 @@ function ReceptionistDeskContent() {
                     {/* Settle Payment Action */}
                     <button
                       onClick={() => setActivePaymentToken(token)}
-                      className="px-2.5 py-1 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-bold flex items-center gap-1 cursor-pointer transition-all"
+                      className="px-2.5 py-1.5 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-300 border border-emerald-500/25 rounded-xl text-xs font-semibold flex items-center gap-1 cursor-pointer transition-all"
                     >
                       <DollarSign className="w-3.5 h-3.5" />
                       <span>Billing</span>
@@ -761,9 +798,9 @@ function ReceptionistDeskContent() {
                         })
                       }
                       title="Print 58mm Thermal Token"
-                      className="p-1.5 bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 rounded-lg text-xs cursor-pointer"
+                      className="p-1.5 glass-panel-nested hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] rounded-xl text-xs cursor-pointer transition-all"
                     >
-                      <Printer className="w-3.5 h-3.5 text-cyan-400" />
+                      <Printer className="w-3.5 h-3.5 text-slate-300" />
                     </button>
                   </div>
                 </div>
@@ -813,7 +850,7 @@ function ReceptionistDeskContent() {
 
 export default function ReceptionistDeskPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-950 text-white p-8">Loading Reception Console...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0B0C0E] text-white p-8">Loading Reception Console...</div>}>
       <ReceptionistDeskContent />
     </Suspense>
   );

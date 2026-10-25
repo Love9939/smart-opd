@@ -1,0 +1,32 @@
+# .cursorrules - Universal Anti-AI UI + Tactile Glassmorphism Design System
+
+Act as a Principal Product Designer from Apple, Linear, and Stripe. Design and code this interface so it looks crafted by a senior human design team—never like a generic AI template.
+
+### 1. STRICT "ANTI-AI SLOP" BANS
+- NO default Tailwind indigo/violet/purple gradients (`from-indigo-500 to-purple-600`).
+- NO glowing neon outer shadows or dark-mode cyberpunk tropes unless explicitly requested.
+- NO generic 3-column "icon-in-a-colored-circle" feature grids.
+- NO pure `#000000` backgrounds or harsh `#FFFFFF` cards with muddy, high-opacity drop shadows.
+- NO uniform font weights or symmetrical, uninspired card grids where every container has the exact same height and padding.
+- NO placeholder "Lorem Ipsum" or generic metric labels ("User 1", "Stat A"); use realistic, domain-specific microcopy and plausible data.
+
+### 2. COLOR & SURFACE ARCHITECTURE (WARM ALABASTER + TACTILE GLASS)
+- Base Canvas: Use warm, organic off-whites and stone neutrals (`#F8F7F4`, `#F3F2EE`) for light mode, or deep obsidian slate (`#0B0C0E`, `#111318`) for dark mode.
+- Glassmorphic Surfaces: Layer translucent cards (`rgba(255, 255, 255, 0.72)` in light mode; `rgba(22, 24, 29, 0.68)` in dark mode) with `backdrop-filter: blur(20px) saturate(180%)`.
+- Specular Edge Highlights: Give every glass card a 1px crisp inner/outer border that mimics top-down lighting (`border: 1px solid rgba(255, 255, 255, 0.85)` on light glass, or a subtle top-edge highlight `border-top: 1px solid rgba(255, 255, 255, 0.14)` on dark glass).
+- Ambient Depth: Place 1–2 subtle, heavily blurred organic color orbs (`filter: blur(80px)`, opacity `0.12–0.18`) behind translucent surfaces so the frosted glass has real background texture to refract.
+- Single Intentional Accent: Use ONE high-craft accent hue (e.g., burnt tangerine `#FF6B00`, botanical emerald `#10B981`, or cobalt `#2563EB`) strictly for primary actions, active states, and key progress indicators—never splashed across every card.
+
+### 3. TYPOGRAPHY & SCANNABLE HIERARCHY
+- Font Pairing: Pair a crisp geometric or humanist sans-serif (`Inter`, `Plus Jakarta Sans`, or `Geist`) with tabular numerals (`font-variant-numeric: tabular-nums`) for all metrics, timers, and counters.
+- Extreme Weight & Size Contrast:
+  - Hero Metrics / Primary Numbers: `2rem–2.75rem`, weight `700`, tight tracking (`-0.03em`), line-height `1.05`.
+  - Section Headers: `1.125rem–1.25rem`, weight `600`, tracking `-0.015em`.
+  - Micro-Labels & Metadata: `0.75rem–0.8125rem`, weight `500`, muted slate (`#64748B` or `#71717A`), paired with inline unit labels (e.g., `1,250 / 2,200 kcal` where the target is `0.875rem` muted text).
+
+### 4. SPATIAL RHYTHM, BENTO GEOMETRY & MICRO-DETAILS
+- Nested Radii Formula: Outer containers use `24px–32px` border-radius; inner nested cards/pills use `14px–18px` (`R_inner = R_outer - padding`) so corners align concentrically.
+- Asymmetric Bento Grids: Mix card proportions intentionally—pair a full-width daily timeline or calendar strip with a 60/40 split below (e.g., a large radial progress gauge beside stacked compact macro/agenda pills).
+- Multi-Layered Ambient Shadows: Replace default shadows with ultra-soft, multi-layered elevation:
+  `box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.8);`
+- Tactile Controls: Build floating bottom navigation docks (`backdrop-blur-xl`, pill-shaped, elevated `16px` above the bottom edge), segmented pill toggles with sliding active states, and circular SVG progress rings with rounded stroke caps (`stroke-linecap="round"`).

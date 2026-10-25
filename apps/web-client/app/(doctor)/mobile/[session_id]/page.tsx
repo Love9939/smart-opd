@@ -29,6 +29,8 @@ import {
   Droplet,
   Users,
   ShieldAlert,
+  ChevronRight,
+  Check,
 } from 'lucide-react';
 
 function DoctorMobileContent() {
@@ -65,6 +67,8 @@ function DoctorMobileContent() {
       rbs: 115,
       weight: 74,
     },
+    family_cluster_id: 'cluster-demo',
+    family_cluster_name: 'Ramesh K. & Savitri Bai',
   });
 
   const [alerts] = useState<string[]>(['PENICILLIN_ALLERGY', 'HYPERTENSIVE']);
@@ -72,6 +76,7 @@ function DoctorMobileContent() {
   const [shadowAlertToast, setShadowAlertToast] = useState<string | null>(null);
   const [preMedCountdown, setPreMedCountdown] = useState<number | null>(null);
   const [preMedTokenDisplay, setPreMedTokenDisplay] = useState<string | null>(null);
+  const [anesthesiaTimer, setAnesthesiaTimer] = useState<number>(14 * 60 + 28);
 
   const { lastEvent } = useLiveClinicStore();
 
@@ -106,6 +111,14 @@ function DoctorMobileContent() {
     return () => clearInterval(interval);
   }, [preMedCountdown, preMedTokenDisplay]);
 
+  // Anesthesia countdown ticker simulation
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAnesthesiaTimer((prev) => (prev > 0 ? prev - 1 : 15 * 60));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
   // Odontogram records
   const [odontogramRecords, setOdontogramRecords] = useState<DentalOdontogramRecord[]>([
     {
@@ -123,7 +136,6 @@ function DoctorMobileContent() {
 
   // Actions
   const handleCallNext = async () => {
-    // Attempt real backend call
     const chairUuid =
       selectedChair === 'DENTAL-CHAIR-1'
         ? 'c1111111-0000-0000-0000-000000000001'
@@ -197,7 +209,6 @@ function DoctorMobileContent() {
     setTimeout(() => setStatusMessage(null), 3500);
   };
 
-  // Pediatric Pre-Medication Hold (25m sedation/numbing gel hold)
   const handleStartPreMedHold = () => {
     if (!activePatient) return;
     try {
@@ -218,7 +229,6 @@ function DoctorMobileContent() {
     setTimeout(() => setStatusMessage(null), 3500);
   };
 
-  // GP Intra-Visit Diagnostic Pause
   const handleSendForDiagnostics = (type: string) => {
     if (!activePatient) return;
     const chairUuid = 'c3333333-0000-0000-0000-000000000003';
@@ -242,7 +252,6 @@ function DoctorMobileContent() {
     setTimeout(() => setStatusMessage(null), 3500);
   };
 
-  // Emergency Pain Relief Slot
   const handleInsertPainReliefSlot = () => {
     try {
       fetch(`http://localhost:8080/api/v1/sessions/${sessionId}/emergency-triage`, {
@@ -299,416 +308,482 @@ function DoctorMobileContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white font-sans flex flex-col pb-28">
-      {/* Top Mobile Bar */}
-      <header className="bg-slate-900 border-b border-slate-800 px-4 py-3 sticky top-0 z-40 flex items-center justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-base font-extrabold text-white">
-              {clinicalMode === 'OPERATORY_CHAIR_MODE' ? 'Dr. Sneha Rao (Dentist)' : 'Dr. Arjun Reddy (Physician)'}
-            </h1>
+    <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F5] font-sans flex flex-col justify-start items-center relative overflow-x-hidden selection:bg-[#10B981] selection:text-[#0B0C0E]">
+      {/* Background Ambient Orbs for Frosted Refraction */}
+      <div
+        className="ambient-glow w-[380px] h-[380px] -top-20 -left-20 bg-[#10B981]/12"
+        style={{ filter: 'blur(80px)' }}
+      />
+      <div
+        className="ambient-glow w-[380px] h-[380px] top-64 -right-24 bg-[#FF6B00]/10"
+        style={{ filter: 'blur(80px)' }}
+      />
+
+      {/* Centered iOS Viewport Shell (390px - 440px) */}
+      <div className="w-full max-w-md min-h-screen flex flex-col pb-28 relative z-10 px-4 pt-3 space-y-4">
+        {/* iOS Header Strip with Clinician Identity */}
+        <header className="glass-panel p-4 flex items-center justify-between border-t border-white/20">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#10B981] to-[#059669] flex items-center justify-center text-[#0B0C0E] font-extrabold text-sm shadow-md">
+              DR
+            </div>
+            <div>
+              <h1 className="text-sm font-bold tracking-tight text-white leading-tight">
+                {clinicalMode === 'OPERATORY_CHAIR_MODE' ? 'Dr. Sneha Rao' : 'Dr. Arjun Reddy'}
+              </h1>
+              <p className="text-[11px] text-stone-400 font-medium">
+                {clinicalMode === 'OPERATORY_CHAIR_MODE' ? 'Endodontics & Operatory' : 'General Physician OPD'}
+              </p>
+            </div>
           </div>
-          <p className="text-[11px] text-slate-400">1-Thumb Cockpit • {selectedChair}</p>
-        </div>
 
-        {/* Clinical Physics Mode Switcher */}
-        <div className="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
-          <button
-            onClick={() => {
-              setClinicalMode('OPERATORY_CHAIR_MODE');
-              setSelectedChair('DENTAL-CHAIR-1');
-            }}
-            className={`px-2.5 py-1 text-[11px] font-bold rounded-lg transition-all ${
-              clinicalMode === 'OPERATORY_CHAIR_MODE' ? 'bg-cyan-500 text-slate-950 shadow' : 'text-slate-400'
-            }`}
-          >
-            Dental
-          </button>
-          <button
-            onClick={() => {
-              setClinicalMode('OPD_VELOCITY_MODE');
-              setSelectedChair('GP-CABIN-1');
-            }}
-            className={`px-2.5 py-1 text-[11px] font-bold rounded-lg transition-all ${
-              clinicalMode === 'OPD_VELOCITY_MODE' ? 'bg-teal-400 text-slate-950 shadow' : 'text-slate-400'
-            }`}
-          >
-            GP Velocity
-          </button>
-        </div>
-      </header>
-
-      {/* Toast alert */}
-      {statusMessage && (
-        <div className="bg-gradient-to-r from-teal-900 to-cyan-900 border-b border-teal-500/50 px-4 py-2.5 text-xs font-bold text-teal-200 animate-fadeIn">
-          {statusMessage}
-        </div>
-      )}
-
-      {/* Front-Desk Cash Waiver / Pilferage Alert Banner */}
-      {shadowAlertToast && (
-        <div className="bg-amber-950/90 border-b border-amber-500/70 px-4 py-2.5 text-xs text-amber-200 flex items-center justify-between animate-fadeIn">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="w-4 h-4 text-amber-400 shrink-0 animate-bounce" />
-            <span className="font-semibold">{shadowAlertToast}</span>
+          {/* Segmented Mode Switcher */}
+          <div className="flex items-center bg-white/06 p-1 rounded-full border border-white/10">
+            <button
+              onClick={() => {
+                setClinicalMode('OPERATORY_CHAIR_MODE');
+                setSelectedChair('DENTAL-CHAIR-1');
+              }}
+              className={`px-3 py-1 text-[11px] font-bold rounded-full transition-all ${
+                clinicalMode === 'OPERATORY_CHAIR_MODE'
+                  ? 'bg-[#10B981] text-[#0B0C0E] shadow-sm'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              Dental
+            </button>
+            <button
+              onClick={() => {
+                setClinicalMode('OPD_VELOCITY_MODE');
+                setSelectedChair('GP-CABIN-1');
+              }}
+              className={`px-3 py-1 text-[11px] font-bold rounded-full transition-all ${
+                clinicalMode === 'OPD_VELOCITY_MODE'
+                  ? 'bg-[#10B981] text-[#0B0C0E] shadow-sm'
+                  : 'text-stone-400 hover:text-white'
+              }`}
+            >
+              GP OPD
+            </button>
           </div>
-          <button
-            onClick={() => setShadowAlertToast(null)}
-            className="text-amber-400 hover:text-white font-bold ml-3 text-xs"
-          >
-            ✕
-          </button>
+        </header>
+
+        {/* Chair Switcher Strip */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          {(['DENTAL-CHAIR-1', 'DENTAL-CHAIR-2', 'GP-CABIN-1'] as const).map((chair) => (
+            <button
+              key={chair}
+              onClick={() => setSelectedChair(chair)}
+              className={`px-3.5 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all border ${
+                selectedChair === chair
+                  ? 'bg-white/12 text-white border-white/30 shadow-sm'
+                  : 'bg-white/04 text-stone-400 border-white/06 hover:text-stone-200'
+              }`}
+            >
+              {chair.replace('-', ' ')}
+            </button>
+          ))}
         </div>
-      )}
 
-      {/* Top Tab Bar */}
-      <div className="px-4 py-3 bg-slate-900/50 border-b border-slate-800 flex items-center justify-around overflow-x-auto gap-1">
-        <button
-          onClick={() => setActiveTab('console')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'console'
-              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <Layers className="w-3.5 h-3.5" />
-          <span>Active Patient</span>
-        </button>
-
-        {clinicalMode === 'OPERATORY_CHAIR_MODE' && (
-          <button
-            onClick={() => setActiveTab('odontogram')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
-              activeTab === 'odontogram'
-                ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>FDI Odontogram</span>
-          </button>
+        {/* Floating Toast Notification */}
+        {statusMessage && (
+          <div className="glass-panel p-3 text-xs font-medium text-[#10B981] flex items-center justify-between border-t border-[#10B981]/30">
+            <span>{statusMessage}</span>
+            <button onClick={() => setStatusMessage(null)} className="text-stone-400 hover:text-white ml-2">
+              ✕
+            </button>
+          </div>
         )}
 
-        <button
-          onClick={() => setActiveTab('camrx')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'camrx'
-              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <FileText className="w-3.5 h-3.5" />
-          <span>CamRx & Vitals</span>
-        </button>
+        {/* Front-Desk Cash Waiver / Pilferage Alert */}
+        {shadowAlertToast && (
+          <div className="glass-panel p-3.5 bg-amber-950/40 border border-amber-500/40 text-xs text-amber-200 flex items-start justify-between gap-2 animate-bounce">
+            <div className="flex items-start gap-2">
+              <ShieldAlert className="w-4 h-4 text-[#FF6B00] shrink-0 mt-0.5" />
+              <span>{shadowAlertToast}</span>
+            </div>
+            <button onClick={() => setShadowAlertToast(null)} className="text-amber-400 hover:text-white">
+              ✕
+            </button>
+          </div>
+        )}
 
-        <button
-          onClick={() => setActiveTab('ledger')}
-          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 ${
-            activeTab === 'ledger'
-              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow'
-              : 'text-slate-400 hover:text-white'
-          }`}
-        >
-          <DollarSign className="w-3.5 h-3.5" />
-          <span>Installments</span>
-        </button>
-      </div>
+        {/* Segmented Top Tabs */}
+        <div className="glass-panel p-1.5 flex items-center justify-around gap-1">
+          {[
+            { id: 'console', label: 'In-Cabin', icon: Layers },
+            ...(clinicalMode === 'OPERATORY_CHAIR_MODE' ? [{ id: 'odontogram', label: 'Odontogram', icon: Sparkles }] : []),
+            { id: 'camrx', label: 'CamRx', icon: FileText },
+            { id: 'ledger', label: 'Ledger', icon: DollarSign },
+          ].map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`flex-1 py-1.5 px-2 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                  isActive ? 'bg-white/12 text-white shadow-sm' : 'text-stone-400 hover:text-stone-200'
+                }`}
+              >
+                <Icon className="w-3.5 h-3.5" />
+                <span>{tab.label}</span>
+              </button>
+            );
+          })}
+        </div>
 
-      {/* Main Content Area */}
-      <main className="p-4 flex-1">
+        {/* Tab 1: In-Cabin Console */}
         {activeTab === 'console' && (
           <div className="space-y-4">
-            {/* Pediatric Pre-Medication Hold Active Timer Card */}
+            {/* Active Pre-Medication Hold Countdown Banner */}
             {preMedCountdown !== null && (
-              <div className="p-3.5 bg-gradient-to-r from-purple-950/60 to-slate-900 border border-purple-500/40 rounded-2xl shadow-lg flex items-center justify-between animate-pulse">
+              <div className="glass-panel p-4 flex items-center justify-between border-t border-[#FF6B00]/40">
                 <div className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold">
+                  <div className="w-9 h-9 rounded-2xl bg-[#FF6B00]/20 text-[#FF6B00] flex items-center justify-center font-bold">
                     🧸
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-white">
-                      Pre-Medication Hold: {preMedTokenDisplay || 'Pediatric Patient'}
-                    </div>
-                    <div className="text-[11px] text-purple-300">
-                      Numbing gel & oral sedation active in lobby
-                    </div>
+                    <div className="text-xs font-bold text-white">Pre-Medication Sedation Hold</div>
+                    <div className="text-[11px] text-stone-400">{preMedTokenDisplay} • Waiting in lobby</div>
                   </div>
                 </div>
-                <div className="text-lg font-mono font-black text-purple-300 bg-purple-500/20 px-3 py-1 rounded-xl border border-purple-500/30">
+                <div className="text-base font-mono font-bold text-[#FF6B00] tabular-nums">
                   {Math.floor(preMedCountdown / 60)}:{String(preMedCountdown % 60).padStart(2, '0')}
                 </div>
               </div>
             )}
 
             {activePatient ? (
-              <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
-                {/* Active Patient Card */}
-                <div className="flex items-start justify-between mb-3 border-b border-slate-800 pb-3">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-teal-400 tracking-wider">
-                      Currently In Cabin • {selectedChair}
-                    </span>
-                    <h2 className="text-xl font-extrabold text-white mt-0.5">{activePatient.patient_name}</h2>
-                  </div>
-                  <span className="w-14 h-11 bg-cyan-500/20 border-2 border-cyan-400 text-cyan-300 font-mono font-black text-lg rounded-xl flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                    {activePatient.token_display}
-                  </span>
-                </div>
+              <div className="space-y-4">
+                {/* Asymmetric Bento: Top Hero Summary Card */}
+                <div className="glass-panel p-6 space-y-4 border-t border-white/20">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400">
+                        Serving • {selectedChair.replace('-', ' ')}
+                      </span>
+                      <h2 className="text-lg font-bold text-white tracking-tight mt-0.5">
+                        {activePatient.patient_name}
+                      </h2>
+                      <div className="text-xs text-stone-400 mt-0.5">
+                        Chief Complaint: {activePatient.chief_complaint}
+                      </div>
+                    </div>
 
-                {/* Family Cluster Badge if arriving together */}
-                {activePatient.family_cluster_name && (
-                  <div className="mb-3 p-2 rounded-xl bg-cyan-950/40 border border-cyan-500/30 flex items-center gap-2 text-cyan-200 text-xs font-medium">
-                    <Users className="w-4 h-4 text-cyan-400 shrink-0" />
-                    <span>
-                      Family Arriving Together: <strong>{activePatient.family_cluster_name}</strong>
-                    </span>
+                    {/* Prominent Tabular Token Metric Badge */}
+                    <div className="glass-panel-nested px-4 py-2 text-center border-t border-white/20">
+                      <div className="text-2xl font-extrabold tracking-tight text-white font-mono tabular-nums leading-none">
+                        {activePatient.token_display}
+                      </div>
+                      <div className="text-[9px] uppercase tracking-wider text-[#10B981] font-bold mt-1">
+                        IN-CABIN
+                      </div>
+                    </div>
                   </div>
-                )}
 
-                {/* Medical Alerts (High-Priority Badges) & Consent Status */}
-                <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                  {alerts.map((a) => (
-                    <span
-                      key={a}
-                      className="px-2 py-0.5 bg-rose-500/20 text-rose-300 border border-rose-500/40 text-[10px] font-bold rounded-md flex items-center gap-1"
+                  {/* Family Cluster Indicator */}
+                  {activePatient.family_cluster_name && (
+                    <div className="glass-pill px-3 py-1.5 flex items-center gap-2 text-xs text-stone-300">
+                      <Users className="w-3.5 h-3.5 text-[#10B981]" />
+                      <span>Family Cluster: <strong>{activePatient.family_cluster_name}</strong></span>
+                    </div>
+                  )}
+
+                  {/* Medical Alerts & DPDP Consent Status */}
+                  <div className="flex flex-wrap items-center gap-2 pt-1">
+                    {alerts.map((a) => (
+                      <span
+                        key={a}
+                        className="px-2.5 py-1 rounded-full bg-rose-500/15 border border-rose-500/30 text-rose-300 text-[10px] font-bold flex items-center gap-1"
+                      >
+                        <AlertTriangle className="w-3 h-3 text-rose-400" />
+                        <span>{a.replace('_', ' ')}</span>
+                      </span>
+                    ))}
+
+                    <button
+                      onClick={() => setIsConsentModalOpen(true)}
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold border transition-all flex items-center gap-1 ${
+                        hasSignedConsent
+                          ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30'
+                          : 'bg-white/06 text-stone-300 border-white/10 hover:bg-white/12'
+                      }`}
                     >
-                      <AlertTriangle className="w-3 h-3" />
-                      <span>{a.replace('_', ' ')}</span>
-                    </span>
-                  ))}
+                      <Shield className="w-3 h-3" />
+                      <span>{hasSignedConsent ? 'DPDP Consent Sealed ✓' : 'Sign DPDP Consent'}</span>
+                    </button>
+                  </div>
 
-                  <button
-                    onClick={() => setIsConsentModalOpen(true)}
-                    className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold border transition-all flex items-center gap-1 cursor-pointer ${
-                      hasSignedConsent
-                        ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                        : 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
-                    }`}
-                  >
-                    <Shield className="w-3 h-3" />
-                    <span>{hasSignedConsent ? 'DPDP Consent Signed ✓' : '✍️ Sign Informed Consent'}</span>
-                  </button>
+                  {/* Procedure Milestone Progress Bars */}
+                  {clinicalMode === 'OPERATORY_CHAIR_MODE' && (
+                    <div className="pt-3 border-t border-white/08 space-y-2">
+                      <div className="flex items-center justify-between text-[11px] text-stone-400 font-medium">
+                        <span>Milestone 2/3: Root Canal Prep</span>
+                        <span className="font-mono tabular-nums text-white">64% Completed</span>
+                      </div>
+                      <div className="h-1.5 w-full bg-white/08 rounded-full overflow-hidden flex gap-1 p-0.5">
+                        <div className="h-full bg-[#10B981] rounded-full w-2/5" />
+                        <div className="h-full bg-[#10B981]/60 rounded-full w-1/4" />
+                        <div className="h-full bg-white/10 rounded-full w-1/3" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                {/* Chief Complaint */}
-                <div className="p-3 bg-slate-950/80 rounded-xl border border-slate-800 mb-3">
-                  <span className="text-[10px] font-mono uppercase text-slate-400 font-bold">Chief Complaint:</span>
-                  <p className="text-xs text-slate-200 mt-1 font-medium">{activePatient.chief_complaint}</p>
+                {/* Split Row Bento (60/40 Asymmetric) */}
+                <div className="grid grid-cols-12 gap-4">
+                  {/* Left (7 Cols): Latency Gauge / Timer */}
+                  <div className="col-span-7 glass-panel p-5 flex flex-col justify-between">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-stone-400">
+                        {clinicalMode === 'OPERATORY_CHAIR_MODE' ? 'Anesthesia Numbing' : 'Consult Velocity'}
+                      </span>
+                      <Clock className="w-3.5 h-3.5 text-stone-400" />
+                    </div>
+
+                    <div className="my-3 flex items-center gap-3">
+                      <div className="relative w-14 h-14 shrink-0 flex items-center justify-center">
+                        <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
+                          <path
+                            className="text-white/10"
+                            strokeWidth="3.5"
+                            stroke="currentColor"
+                            fill="none"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          />
+                          <path
+                            className="text-[#FF6B00]"
+                            strokeDasharray="68, 100"
+                            strokeLinecap="round"
+                            strokeWidth="3.5"
+                            stroke="currentColor"
+                            fill="none"
+                            d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
+                          />
+                        </svg>
+                        <Syringe className="w-4 h-4 text-[#FF6B00] absolute" />
+                      </div>
+
+                      <div>
+                        <div className="text-xl font-extrabold tracking-tight text-white font-mono tabular-nums leading-none">
+                          {Math.floor(anesthesiaTimer / 60)}:{String(anesthesiaTimer % 60).padStart(2, '0')}
+                        </div>
+                        <div className="text-[10px] text-stone-400 mt-1">15m Target Latency</div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={handleStartAnesthesiaHold}
+                      className="glass-pill px-3 py-1.5 text-[11px] font-bold text-[#FF6B00] border-t border-[#FF6B00]/30 hover:bg-white/06 transition-all text-center"
+                    >
+                      Move to Numbing Lounge
+                    </button>
+                  </div>
+
+                  {/* Right (5 Cols): Scannable Vitals Metrics */}
+                  <div className="col-span-5 glass-panel p-4 flex flex-col justify-between">
+                    <span className="text-[11px] font-semibold text-stone-400">Vitals</span>
+                    <div className="space-y-1.5 my-1">
+                      <div className="glass-panel-nested p-1.5 text-center">
+                        <div className="text-[9px] text-stone-400">BP</div>
+                        <div className="text-xs font-bold text-white font-mono tabular-nums">
+                          {activePatient.vitals?.bp || '120/80'}
+                        </div>
+                      </div>
+                      <div className="glass-panel-nested p-1.5 text-center">
+                        <div className="text-[9px] text-stone-400">SpO2</div>
+                        <div className="text-xs font-bold text-[#10B981] font-mono tabular-nums">
+                          {activePatient.vitals?.spo2 || 99}%
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-[9px] text-stone-500 text-center">RBS {activePatient.vitals?.rbs || 115} mg/dL</div>
+                  </div>
                 </div>
 
-                {/* Recorded Vitals Quick Bar */}
-                <div className="grid grid-cols-4 gap-2 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800/80 text-center text-xs mb-4">
-                  <div>
-                    <span className="text-[10px] text-slate-500 block">BP</span>
-                    <span className="font-mono font-bold text-rose-300">{activePatient.vitals?.bp}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-500 block">SpO2</span>
-                    <span className="font-mono font-bold text-cyan-300">{activePatient.vitals?.spo2}%</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-500 block">RBS</span>
-                    <span className="font-mono font-bold text-purple-300">{activePatient.vitals?.rbs}</span>
-                  </div>
-                  <div>
-                    <span className="text-[10px] text-slate-500 block">Weight</span>
-                    <span className="font-mono font-bold text-emerald-300">{activePatient.vitals?.weight}kg</span>
-                  </div>
-                </div>
+                {/* Tactical Clinical Physics Actions */}
+                <div className="glass-panel p-4 space-y-2.5">
+                  <span className="text-xs font-bold text-white block">Interleaving &amp; Triage Actions</span>
 
-                {/* GP Velocity Mode Intra-Visit Diagnostic Pause Buttons */}
-                {clinicalMode === 'OPD_VELOCITY_MODE' && (
-                  <div className="pt-3 border-t border-slate-800">
-                    <label className="block text-[11px] font-bold text-slate-400 mb-2">
-                      Intra-Visit Pause (Frees Cabin to Call Next Patient):
-                    </label>
+                  {clinicalMode === 'OPERATORY_CHAIR_MODE' ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        onClick={handleInsertPainReliefSlot}
+                        className="glass-panel-nested p-3 text-left hover:border-[#FF6B00]/40 transition-all flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                            <Flame className="w-3.5 h-3.5 text-[#FF6B00]" />
+                            <span>+10m Emergency</span>
+                          </div>
+                          <div className="text-[10px] text-stone-400 mt-0.5">Acute trauma slot</div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-stone-500" />
+                      </button>
+
+                      <button
+                        onClick={handleStartPreMedHold}
+                        className="glass-panel-nested p-3 text-left hover:border-[#10B981]/40 transition-all flex items-center justify-between"
+                      >
+                        <div>
+                          <div className="text-xs font-bold text-white flex items-center gap-1.5">
+                            <Clock className="w-3.5 h-3.5 text-[#10B981]" />
+                            <span>🧸 Pre-Med Hold</span>
+                          </div>
+                          <div className="text-[10px] text-stone-400 mt-0.5">25m Sedation gel</div>
+                        </div>
+                        <ChevronRight className="w-4 h-4 text-stone-500" />
+                      </button>
+                    </div>
+                  ) : (
                     <div className="grid grid-cols-3 gap-2">
                       <button
-                        onClick={() => handleSendForDiagnostics('Blood Test & Sugar Profile')}
-                        className="p-2 bg-slate-950 border border-slate-800 hover:border-cyan-500 rounded-xl text-[11px] font-semibold text-slate-300 flex flex-col items-center gap-1 cursor-pointer"
+                        onClick={() => handleSendForDiagnostics('Blood Sugar')}
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
                       >
-                        <Droplet className="w-3.5 h-3.5 text-rose-400" />
-                        <span>Blood Test</span>
+                        <Droplet className="w-4 h-4 text-rose-400 mx-auto mb-1" />
+                        <span>Lab Test</span>
                       </button>
                       <button
                         onClick={() => handleSendForDiagnostics('12-Lead ECG')}
-                        className="p-2 bg-slate-950 border border-slate-800 hover:border-cyan-500 rounded-xl text-[11px] font-semibold text-slate-300 flex flex-col items-center gap-1 cursor-pointer"
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
                       >
-                        <Activity className="w-3.5 h-3.5 text-cyan-400" />
-                        <span>12-Lead ECG</span>
+                        <Activity className="w-4 h-4 text-[#3B82F6] mx-auto mb-1" />
+                        <span>ECG</span>
                       </button>
                       <button
-                        onClick={() => handleSendForDiagnostics('Nebulization Therapy')}
-                        className="p-2 bg-slate-950 border border-slate-800 hover:border-cyan-500 rounded-xl text-[11px] font-semibold text-slate-300 flex flex-col items-center gap-1 cursor-pointer"
+                        onClick={() => handleSendForDiagnostics('Nebulizer')}
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
                       >
-                        <Zap className="w-3.5 h-3.5 text-amber-400" />
+                        <Zap className="w-4 h-4 text-[#FF6B00] mx-auto mb-1" />
                         <span>Nebulizer</span>
                       </button>
                     </div>
-                  </div>
-                )}
-
-                {/* Emergency Pain Relief Slot Inserter & Pediatric Pre-Med Hold */}
-                {clinicalMode === 'OPERATORY_CHAIR_MODE' && (
-                  <div className="pt-3 border-t border-slate-800 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <div className="text-[11px] text-slate-400">
-                        Emergency pain walk-in? Shift schedule:
-                      </div>
-                      <button
-                        onClick={handleInsertPainReliefSlot}
-                        className="px-2.5 py-1.5 bg-rose-500/20 hover:bg-rose-500/30 text-rose-300 border border-rose-500/40 rounded-xl text-[10px] font-bold flex items-center gap-1 cursor-pointer"
-                      >
-                        <Flame className="w-3 h-3 text-rose-400" />
-                        <span>+10m Emergency Slot</span>
-                      </button>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="text-[11px] text-slate-400">
-                        Anxious pediatric patient? Apply topical gel:
-                      </div>
-                      <button
-                        onClick={handleStartPreMedHold}
-                        className="px-2.5 py-1.5 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 border border-purple-500/40 rounded-xl text-[10px] font-bold flex items-center gap-1 cursor-pointer"
-                      >
-                        <Clock className="w-3 h-3 text-purple-400" />
-                        <span>🧸 Pre-Med Hold (25m)</span>
-                      </button>
-                    </div>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             ) : (
-              <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-8 text-center">
-                <User className="w-12 h-12 text-slate-600 mx-auto mb-2" />
-                <h3 className="text-sm font-bold text-white mb-1">Chair / Cabin is Currently Empty</h3>
-                <p className="text-xs text-slate-400 mb-4">
-                  Tap 'Call Next' below to summon the next patient in priority sequence.
+              <div className="glass-panel p-12 text-center space-y-3">
+                <div className="w-14 h-14 rounded-2xl bg-white/06 text-stone-400 flex items-center justify-center mx-auto">
+                  <User className="w-6 h-6" />
+                </div>
+                <h3 className="text-base font-bold text-white">Chair is Currently Available</h3>
+                <p className="text-xs text-stone-400 max-w-xs mx-auto">
+                  Tap 'Call Next' on the floating dock below to summon the next patient in deterministic sequence.
                 </p>
               </div>
             )}
           </div>
         )}
 
+        {/* Tab 2: Odontogram */}
         {activeTab === 'odontogram' && (
-          <FdiToothChart
-            patientId={activePatient?.patient_id || 'p-007'}
-            records={odontogramRecords}
-            onSaveRecord={(newRecord) => {
-              setOdontogramRecords((prev) => [
-                ...prev.filter((r) => r.fdi_tooth !== newRecord.fdi_tooth),
-                {
-                  id: `od-${Date.now()}`,
-                  patient_id: activePatient?.patient_id || 'p-007',
-                  fdi_tooth: newRecord.fdi_tooth!,
-                  surfaces: newRecord.surfaces || [],
-                  condition_code: newRecord.condition_code || 'HEALTHY',
-                  treatment_action: newRecord.treatment_action,
-                  estimated_cost_inr: newRecord.estimated_cost_inr,
-                  notes: newRecord.notes,
-                  updated_at: new Date().toISOString(),
-                },
-              ]);
-              setStatusMessage(`✓ FDI Tooth #${newRecord.fdi_tooth} updated with treatment plan!`);
-              setTimeout(() => setStatusMessage(null), 3000);
-            }}
-          />
+          <div className="glass-panel p-4">
+            <FdiToothChart
+              patientId={activePatient?.patient_id || 'p-007'}
+              records={odontogramRecords}
+              onSaveRecord={(newRecord) => {
+                setOdontogramRecords((prev) => {
+                  const filtered = prev.filter((r) => r.fdi_tooth !== newRecord.fdi_tooth);
+                  const fullRecord: DentalOdontogramRecord = {
+                    id: newRecord.id || `rec-${Date.now()}`,
+                    patient_id: newRecord.patient_id || activePatient?.patient_id || 'p-007',
+                    fdi_tooth: newRecord.fdi_tooth || 11,
+                    surfaces: newRecord.surfaces || [],
+                    condition_code: newRecord.condition_code || 'HEALTHY',
+                    notes: newRecord.notes,
+                    iopa_xray_url: newRecord.iopa_xray_url,
+                    treatment_action: newRecord.treatment_action || 'NONE',
+                    estimated_cost_inr: newRecord.estimated_cost_inr || 0,
+                    updated_at: new Date().toISOString(),
+                  };
+                  return [...filtered, fullRecord];
+                });
+                setStatusMessage(`✓ Tooth #${newRecord.fdi_tooth} state updated`);
+                setTimeout(() => setStatusMessage(null), 3000);
+              }}
+            />
+          </div>
         )}
 
+        {/* Tab 3: CamRx & Vitals */}
         {activeTab === 'camrx' && (
-          <PrescriptionCameraScanner
-            tokenId={activePatient?.token_id || 't-007'}
-            onSave={(data) => {
-              if (activePatient) {
-                setActivePatient({ ...activePatient, vitals: data.vitals, rx_image_url: data.rxImageUrl });
-              }
-              setStatusMessage('✓ Prescription image & vitals attached to clinical record.');
-              setTimeout(() => setStatusMessage(null), 3000);
-            }}
-          />
+          <div className="glass-panel p-4">
+            <PrescriptionCameraScanner
+              tokenId={activePatient?.token_id || 't-007'}
+              onSave={() => {
+                setStatusMessage('✓ Prescription image scanned, auto-cropped and archived');
+                setTimeout(() => setStatusMessage(null), 3000);
+              }}
+            />
+          </div>
         )}
 
-        {activeTab === 'ledger' && <TreatmentPlanInstallmentLedger />}
-      </main>
+        {/* Tab 4: Ledger & Installments */}
+        {activeTab === 'ledger' && (
+          <div className="glass-panel p-4">
+            <TreatmentPlanInstallmentLedger />
+          </div>
+        )}
 
-      {/* Ergonomic 1-Thumb Bottom Action Dock */}
-      <footer className="fixed bottom-0 left-0 right-0 bg-slate-950/95 border-t border-slate-800 p-3 backdrop-blur-lg z-40">
-        <div className="max-w-md mx-auto grid grid-cols-4 gap-2">
-          {/* Action 1: Call Next */}
-          <button
-            onClick={handleCallNext}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-gradient-to-t from-cyan-600 to-cyan-500 hover:from-cyan-500 hover:to-cyan-400 text-slate-950 font-black text-[11px] shadow-lg shadow-cyan-500/20 active:scale-95 transition-all cursor-pointer"
-          >
-            <User className="w-4 h-4 mb-1" />
-            <span>Call Next</span>
-          </button>
-
-          {/* Action 2: Mode-Specific Pause */}
-          {clinicalMode === 'OPERATORY_CHAIR_MODE' ? (
+        {/* Floating Tactile Glass Dock (Elevated 16px above bottom) */}
+        <div className="fixed bottom-4 left-0 right-0 max-w-md mx-auto px-4 z-40">
+          <nav className="glass-dock h-16 px-3 flex items-center justify-around gap-2 shadow-2xl">
+            {/* Call Next Button */}
             <button
-              onClick={handleStartAnesthesiaHold}
-              disabled={!activePatient}
-              className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-slate-900 border border-indigo-500/40 text-indigo-300 font-bold text-[11px] hover:bg-indigo-950/50 active:scale-95 transition-all disabled:opacity-40 cursor-pointer"
+              onClick={handleCallNext}
+              className="flex-1 h-11 rounded-full bg-[#10B981] hover:bg-[#059669] text-[#0B0C0E] font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-lg shadow-[#10B981]/25 active:scale-95 transition-all"
             >
-              <Syringe className="w-4 h-4 mb-1 text-indigo-400" />
-              <span>LA Hold (15m)</span>
+              <User className="w-4 h-4" />
+              <span>Call Next</span>
             </button>
-          ) : (
+
+            {/* Quick Extension */}
             <button
-              onClick={() => handleSendForDiagnostics('Diagnostics')}
-              disabled={!activePatient}
-              className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-slate-900 border border-teal-500/40 text-teal-300 font-bold text-[11px] hover:bg-teal-950/50 active:scale-95 transition-all disabled:opacity-40 cursor-pointer"
+              onClick={handleSurgicalExtension}
+              className="h-11 px-3 rounded-full bg-white/06 hover:bg-white/12 text-stone-300 font-semibold text-xs flex items-center gap-1 border border-white/08 active:scale-95 transition-all"
             >
-              <Activity className="w-4 h-4 mb-1 text-teal-400" />
-              <span>Lab Pause</span>
+              <Clock className="w-3.5 h-3.5 text-[#FF6B00]" />
+              <span>+20m</span>
             </button>
-          )}
 
-          {/* Action 3: +20m Extension */}
-          <button
-            onClick={handleSurgicalExtension}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 font-bold text-[11px] hover:bg-slate-850 active:scale-95 transition-all cursor-pointer"
-          >
-            <Clock className="w-4 h-4 mb-1 text-amber-400" />
-            <span>+20m Extend</span>
-          </button>
-
-          {/* Action 4: Complete & Sterilize */}
-          <button
-            onClick={handleCompleteAndSterilize}
-            disabled={!activePatient}
-            className="flex flex-col items-center justify-center p-2.5 rounded-xl bg-gradient-to-t from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-slate-950 font-black text-[11px] shadow-lg shadow-emerald-500/20 active:scale-95 transition-all disabled:opacity-40 cursor-pointer"
-          >
-            <CheckCircle className="w-4 h-4 mb-1" />
-            <span>Complete</span>
-          </button>
+            {/* Complete Visit Button */}
+            <button
+              onClick={handleCompleteAndSterilize}
+              disabled={!activePatient}
+              className="h-11 px-4 rounded-full bg-white/08 hover:bg-white/14 disabled:opacity-30 text-white font-bold text-xs flex items-center gap-1.5 border border-white/10 active:scale-95 transition-all"
+            >
+              <Check className="w-4 h-4 text-[#10B981]" />
+              <span>Done</span>
+            </button>
+          </nav>
         </div>
-      </footer>
 
-      {/* Informed Consent E-Signature Modal */}
-      <ConsentSignatureModal
-        isOpen={isConsentModalOpen}
-        onClose={() => setIsConsentModalOpen(false)}
-        patientName={activePatient?.patient_name || 'Patient'}
-        procedureName={
-          clinicalMode === 'OPERATORY_CHAIR_MODE'
-            ? 'Root Canal Treatment & Crown Prep (#36)'
-            : 'Diagnostic Consultation & Prescription'
-        }
-        onConsentSigned={(sig, timestamp) => {
-          setHasSignedConsent(true);
-          setStatusMessage('✓ Digital Informed Consent signed and cryptographically sealed under DPDP Act.');
-          setTimeout(() => setStatusMessage(null), 3500);
-        }}
-      />
+        {/* Informed Consent Modal */}
+        <ConsentSignatureModal
+          isOpen={isConsentModalOpen}
+          onClose={() => setIsConsentModalOpen(false)}
+          patientName={activePatient?.patient_name || 'Patient'}
+          procedureName={
+            clinicalMode === 'OPERATORY_CHAIR_MODE'
+              ? 'Molar Root Canal & Crown Preparation (#36)'
+              : 'Consultation & Medication Administration'
+          }
+          onConsentSigned={() => {
+            setHasSignedConsent(true);
+            setStatusMessage('✓ DPDP 2023 Digital Informed Consent verified & sealed');
+            setTimeout(() => setStatusMessage(null), 3000);
+          }}
+        />
+      </div>
     </div>
   );
 }
 
 export default function DoctorMobilePage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-950 text-white p-6">Loading Doctor Mobile Cockpit...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-[#0B0C0E] text-white p-6">Loading Cockpit...</div>}>
       <DoctorMobileContent />
     </Suspense>
   );
