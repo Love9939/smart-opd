@@ -66,8 +66,8 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
   const upiIntentUri = `upi://pay?pa=smartopd@icici&pn=SmartOPD%20Clinic&am=${amount}&cu=INR&tn=Token%20${token.token_display}`;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfbf9]/95 backdrop-blur-md p-4 animate-fadeIn">
+      <div className="bg-[#f6f6f3] border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl relative">
         {/* Header */}
         <div className="flex items-start justify-between mb-4 border-b border-slate-800 pb-3">
           <div>
@@ -78,7 +78,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs"
+            className="w-7 h-7 rounded-full bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#62625b] hover:text-[#000000] flex items-center justify-center text-xs"
           >
             ✕
           </button>
@@ -86,11 +86,11 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
         {isSettled ? (
           <div className="text-center py-6">
-            <div className="w-14 h-14 rounded-full bg-emerald-500/20 border-2 border-emerald-400 text-emerald-300 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
+            <div className="w-14 h-14 rounded-full bg-[#c7f0da] border-2 border-emerald-400 text-emerald-300 flex items-center justify-center mx-auto mb-3 shadow-lg shadow-emerald-500/20">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h4 className="text-base font-bold text-white mb-1">Payment Successfully Settled!</h4>
-            <p className="text-xs text-slate-400 mb-5">
+            <p className="text-xs text-[#62625b] mb-5">
               Settlement logged into immutable PostgreSQL `token_audit_events` ledger.
             </p>
 
@@ -110,7 +110,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
               </button>
               <button
                 onClick={onClose}
-                className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs"
+                className="flex-1 py-2.5 rounded-xl bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#211922] font-bold text-xs"
               >
                 Done
               </button>
@@ -125,7 +125,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 className={`p-3 rounded-xl border flex flex-col items-center justify-center text-xs font-bold transition-all ${
                   paymentMethod === 'UPI'
                     ? 'bg-cyan-500/20 border-cyan-400 text-cyan-200 shadow'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                    : 'bg-[#f6f6f3] border-slate-800 text-[#62625b] hover:text-[#000000]'
                 }`}
               >
                 <QrCode className="w-5 h-5 mb-1 text-cyan-400" />
@@ -137,7 +137,7 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 className={`p-3 rounded-xl border flex flex-col items-center justify-center text-xs font-bold transition-all ${
                   paymentMethod === 'CASH'
                     ? 'bg-amber-500/20 border-amber-400 text-amber-200 shadow'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                    : 'bg-[#f6f6f3] border-slate-800 text-[#62625b] hover:text-[#000000]'
                 }`}
               >
                 <DollarSign className="w-5 h-5 mb-1 text-amber-400" />
@@ -151,18 +151,18 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                 }}
                 className={`p-3 rounded-xl border flex flex-col items-center justify-center text-xs font-bold transition-all ${
                   paymentMethod === 'FREE_FOLLOWUP'
-                    ? 'bg-emerald-500/20 border-emerald-400 text-emerald-200 shadow'
-                    : 'bg-slate-950 border-slate-800 text-slate-400 hover:text-white'
+                    ? 'bg-[#c7f0da] border-emerald-400 text-[#103c25] shadow'
+                    : 'bg-[#f6f6f3] border-slate-800 text-[#62625b] hover:text-[#000000]'
                 }`}
               >
-                <Clock className="w-5 h-5 mb-1 text-emerald-400" />
+                <Clock className="w-5 h-5 mb-1 text-[#103c25]" />
                 <span>Follow-Up (₹0)</span>
               </button>
             </div>
 
             {/* Dynamic UPI Section */}
             {paymentMethod === 'UPI' && (
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 text-center">
+              <div className="p-4 bg-[#f6f6f3] rounded-2xl border border-slate-800 text-center">
                 <div className="w-40 h-40 bg-white p-2.5 rounded-xl mx-auto mb-2 flex items-center justify-center shadow">
                   <svg viewBox="0 0 100 100" className="w-full h-full">
                     {/* UPI QR Visual Representation */}
@@ -188,18 +188,18 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
                   </svg>
                 </div>
                 <div className="text-xl font-mono font-black text-white">₹{amount}</div>
-                <span className="text-[11px] text-slate-400">Scan via GPay / PhonePe / Paytm</span>
+                <span className="text-[11px] text-[#62625b]">Scan via GPay / PhonePe / Paytm</span>
               </div>
             )}
 
             {/* Cash Section */}
             {paymentMethod === 'CASH' && (
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-3">
+              <div className="p-4 bg-[#f6f6f3] rounded-2xl border border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-300 font-bold">Consultation Fee Due:</span>
+                  <span className="text-xs text-[#33332e] font-bold">Consultation Fee Due:</span>
                   <span className="text-xl font-mono font-black text-amber-300">₹{amount}</span>
                 </div>
-                <div className="text-[11px] text-slate-400 bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
+                <div className="text-[11px] text-[#62625b] bg-amber-500/10 p-2.5 rounded-xl border border-amber-500/20">
                   ⚠️ Cash collected is logged directly into the append-only audit ledger to eliminate shadow consultations.
                 </div>
               </div>
@@ -207,9 +207,9 @@ export const PaymentModal: React.FC<PaymentModalProps> = ({
 
             {/* Free Followup Section */}
             {paymentMethod === 'FREE_FOLLOWUP' && (
-              <div className="p-4 bg-slate-950 rounded-2xl border border-slate-800 space-y-2 text-center">
-                <div className="text-sm font-bold text-emerald-400">5-Day Free Follow-Up Window Verified</div>
-                <p className="text-xs text-slate-400">Previous visit was on Oct 21. Fee charged: ₹0.</p>
+              <div className="p-4 bg-[#f6f6f3] rounded-2xl border border-slate-800 space-y-2 text-center">
+                <div className="text-sm font-bold text-[#103c25]">5-Day Free Follow-Up Window Verified</div>
+                <p className="text-xs text-[#62625b]">Previous visit was on Oct 21. Fee charged: ₹0.</p>
               </div>
             )}
 

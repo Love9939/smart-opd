@@ -62,7 +62,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
+    <div className="bg-[#f6f6f3] border border-slate-800 rounded-2xl p-5 shadow-2xl backdrop-blur-md">
       <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
         <div className="flex items-center gap-2">
           <Camera className="w-5 h-5 text-teal-400" />
@@ -76,7 +76,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
       {/* Vitals Quick Grid */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 mb-5">
         {/* Blood Pressure */}
-        <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+        <div className="bg-[#fbfbf9]/95 p-2.5 rounded-xl border border-slate-800">
           <div className="flex items-center gap-1.5 text-rose-400 text-[11px] font-semibold mb-1">
             <Heart className="w-3.5 h-3.5" />
             <span>BP (mmHg)</span>
@@ -85,12 +85,12 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             type="text"
             value={bp}
             onChange={(e) => setBp(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-rose-500"
+            className="w-full bg-[#f6f6f3] border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-rose-500"
           />
         </div>
 
         {/* SpO2 */}
-        <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+        <div className="bg-[#fbfbf9]/95 p-2.5 rounded-xl border border-slate-800">
           <div className="flex items-center gap-1.5 text-cyan-400 text-[11px] font-semibold mb-1">
             <Activity className="w-3.5 h-3.5" />
             <span>SpO2 (%)</span>
@@ -99,12 +99,12 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             type="number"
             value={spo2}
             onChange={(e) => setSpo2(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-cyan-500"
+            className="w-full bg-[#f6f6f3] border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-cyan-500"
           />
         </div>
 
         {/* Temperature */}
-        <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+        <div className="bg-[#fbfbf9]/95 p-2.5 rounded-xl border border-slate-800">
           <div className="flex items-center gap-1.5 text-amber-400 text-[11px] font-semibold mb-1">
             <Thermometer className="w-3.5 h-3.5" />
             <span>Temp (°F)</span>
@@ -114,12 +114,12 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             step="0.1"
             value={temp}
             onChange={(e) => setTemp(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-amber-500"
+            className="w-full bg-[#f6f6f3] border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-amber-500"
           />
         </div>
 
         {/* RBS */}
-        <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
+        <div className="bg-[#fbfbf9]/95 p-2.5 rounded-xl border border-slate-800">
           <div className="flex items-center gap-1.5 text-purple-400 text-[11px] font-semibold mb-1">
             <Droplet className="w-3.5 h-3.5" />
             <span>RBS (mg/dL)</span>
@@ -128,13 +128,13 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             type="number"
             value={rbs}
             onChange={(e) => setRbs(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-purple-500"
+            className="w-full bg-[#f6f6f3] border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-purple-500"
           />
         </div>
 
         {/* Weight */}
-        <div className="bg-slate-950/80 p-2.5 rounded-xl border border-slate-800">
-          <div className="flex items-center gap-1.5 text-emerald-400 text-[11px] font-semibold mb-1">
+        <div className="bg-[#fbfbf9]/95 p-2.5 rounded-xl border border-slate-800">
+          <div className="flex items-center gap-1.5 text-[#103c25] text-[11px] font-semibold mb-1">
             <Scale className="w-3.5 h-3.5" />
             <span>Weight (kg)</span>
           </div>
@@ -142,22 +142,22 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             type="number"
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-emerald-500"
+            className="w-full bg-[#f6f6f3] border border-slate-700/80 rounded px-2 py-1 text-sm font-mono font-bold text-white focus:outline-none focus:border-emerald-500"
           />
         </div>
       </div>
 
       {/* CamRx Document Scanner Area */}
-      <div className="border border-dashed border-slate-700 rounded-xl p-4 bg-slate-950/50 flex flex-col items-center justify-center min-h-[220px]">
+      <div className="border border-dashed border-slate-700 rounded-xl p-4 bg-[#f6f6f3]/50 flex flex-col items-center justify-center min-h-[220px]">
         {imagePreview ? (
           <div className="w-full flex flex-col items-center">
             {/* Filter Toggle */}
             <div className="flex items-center gap-2 mb-3">
-              <span className="text-xs text-slate-400">Enhance:</span>
+              <span className="text-xs text-[#62625b]">Enhance:</span>
               <button
                 onClick={() => setFilterMode('high-contrast')}
                 className={`px-2.5 py-1 text-[11px] font-semibold rounded ${
-                  filterMode === 'high-contrast' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
+                  filterMode === 'high-contrast' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-[#e5e5e0] text-[#33332e]'
                 }`}
               >
                 High-Contrast Rx
@@ -165,7 +165,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
               <button
                 onClick={() => setFilterMode('document-bw')}
                 className={`px-2.5 py-1 text-[11px] font-semibold rounded ${
-                  filterMode === 'document-bw' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
+                  filterMode === 'document-bw' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-[#e5e5e0] text-[#33332e]'
                 }`}
               >
                 B&W Document
@@ -173,7 +173,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
               <button
                 onClick={() => setFilterMode('normal')}
                 className={`px-2.5 py-1 text-[11px] font-semibold rounded ${
-                  filterMode === 'normal' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-slate-800 text-slate-300'
+                  filterMode === 'normal' ? 'bg-cyan-500 text-slate-950 font-bold' : 'bg-[#e5e5e0] text-[#33332e]'
                 }`}
               >
                 Normal
@@ -195,7 +195,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
             <div className="flex items-center gap-3 mt-3">
               <button
                 onClick={() => setImagePreview(null)}
-                className="flex items-center gap-1.5 px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 rounded-lg"
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-[#e5e5e0] hover:bg-[#c8c8c1] text-xs font-semibold text-[#33332e] rounded-lg"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Retake</span>
@@ -204,9 +204,9 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
           </div>
         ) : (
           <div className="text-center py-6">
-            <Camera className="w-12 h-12 text-slate-600 mx-auto mb-3" />
+            <Camera className="w-12 h-12 text-[#dadad3] mx-auto mb-3" />
             <h4 className="text-sm font-bold text-white mb-1">1-Tap Prescription Scan</h4>
-            <p className="text-xs text-slate-400 max-w-sm mb-4">
+            <p className="text-xs text-[#62625b] max-w-sm mb-4">
               Capture or upload handwritten doctor prescription. Auto-cropped & enhanced with high contrast.
             </p>
             <div className="flex items-center justify-center gap-3">
@@ -220,7 +220,7 @@ export const PrescriptionCameraScanner: React.FC<PrescriptionCameraScannerProps>
               </button>
               <button
                 onClick={() => fileInputRef.current?.click()}
-                className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold rounded-lg cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 bg-[#e5e5e0] hover:bg-[#c8c8c1] text-white text-xs font-bold rounded-lg cursor-pointer"
               >
                 <Upload className="w-4 h-4" />
                 <span>Upload Photo</span>

@@ -407,7 +407,7 @@ function ReceptionistDeskContent() {
                 POS Mode
               </span>
             </div>
-            <p className="text-[11px] text-slate-400">Dr. Sneha Rao & Dr. Arjun Reddy • Session Active</p>
+            <p className="text-[11px] text-[#62625b]">Dr. Sneha Rao & Dr. Arjun Reddy • Session Active</p>
           </div>
         </div>
 
@@ -448,9 +448,9 @@ function ReceptionistDeskContent() {
                 .then((name) => setNotification(`✓ Connected to ${name}`))
                 .catch(() => alert('Web Bluetooth: Make sure printer is powered ON and paired.'));
             }}
-            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 glass-panel-nested hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] rounded-xl text-xs font-medium transition-all cursor-pointer"
+            className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 glass-panel-nested hover:bg-white/[0.08] text-[#33332e] border border-white/[0.08] rounded-xl text-xs font-medium transition-all cursor-pointer"
           >
-            <Printer className="w-3.5 h-3.5 text-slate-400" />
+            <Printer className="w-3.5 h-3.5 text-[#62625b]" />
             <span>58mm ESC/POS</span>
           </button>
 
@@ -477,7 +477,7 @@ function ReceptionistDeskContent() {
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
             <span>{notification}</span>
           </span>
-          <button onClick={() => setNotification(null)} className="text-emerald-400 hover:text-white font-bold ml-4">
+          <button onClick={() => setNotification(null)} className="text-emerald-400 hover:text-[#000000] font-bold ml-4">
             ✕
           </button>
         </div>
@@ -496,7 +496,7 @@ function ReceptionistDeskContent() {
                 </div>
                 <div>
                   <h2 className="text-base font-bold text-white tracking-tight">Walk-In Patient Check-In</h2>
-                  <p className="text-[11px] text-slate-400">Direct admission & thermal ticket issuance</p>
+                  <p className="text-[11px] text-[#62625b]">Direct admission & thermal ticket issuance</p>
                 </div>
               </div>
               <button
@@ -510,7 +510,7 @@ function ReceptionistDeskContent() {
 
             <form onSubmit={handleCheckIn} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+                <label className="block text-xs font-semibold text-[#33332e] mb-1.5">
                   Patient Full Name <span className="text-emerald-400 font-mono">(F1) *</span>
                 </label>
                 <input
@@ -532,7 +532,7 @@ function ReceptionistDeskContent() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Household Mobile</label>
+                  <label className="block text-xs font-semibold text-[#33332e] mb-1.5">Household Mobile</label>
                   <input
                     type="tel"
                     value={phone}
@@ -541,7 +541,7 @@ function ReceptionistDeskContent() {
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1.5">Category</label>
+                  <label className="block text-xs font-semibold text-[#33332e] mb-1.5">Category</label>
                   <select
                     value={category}
                     onChange={(e) => setCategory(e.target.value as any)}
@@ -559,7 +559,7 @@ function ReceptionistDeskContent() {
               <div className="flex items-center justify-between p-3.5 glass-panel-nested rounded-[18px] border border-white/[0.06]">
                 <div>
                   <div className="text-xs font-bold text-white">Priority Elderly / Pregnant / Wheelchair</div>
-                  <div className="text-[11px] text-slate-400">Allocates designated P-Zone physical seating</div>
+                  <div className="text-[11px] text-[#62625b]">Allocates designated P-Zone physical seating</div>
                 </div>
                 <input
                   type="checkbox"
@@ -577,7 +577,7 @@ function ReceptionistDeskContent() {
                       <Users className="w-4 h-4 text-emerald-400" />
                       <span>Family Cluster (Arriving Together)</span>
                     </div>
-                    <div className="text-[11px] text-slate-400">Generates linked #14A & #14B tokens & adjacent seats</div>
+                    <div className="text-[11px] text-[#62625b]">Generates linked #14A & #14B tokens & adjacent seats</div>
                   </div>
                   <input
                     type="checkbox"
@@ -610,7 +610,7 @@ function ReceptionistDeskContent() {
                     <Clock className="w-3.5 h-3.5 text-amber-400" />
                     <span>Late Grace Arrival (&gt;15m past slot)</span>
                   </div>
-                  <div className="text-[11px] text-slate-400">Interleaves at active + 2 (punctual patients not bumped)</div>
+                  <div className="text-[11px] text-[#62625b]">Interleaves at active + 2 (punctual patients not bumped)</div>
                 </div>
                 <input
                   type="checkbox"
@@ -628,7 +628,7 @@ function ReceptionistDeskContent() {
                       <PackageCheck className="w-4 h-4 text-amber-400" />
                       <span>Prosthodontic Lab Dependency Gate</span>
                     </div>
-                    <div className="text-[11px] text-slate-400">Check if visit requires crown/bridge delivery</div>
+                    <div className="text-[11px] text-[#62625b]">Check if visit requires crown/bridge delivery</div>
                   </div>
                   <input
                     type="checkbox"
@@ -677,7 +677,7 @@ function ReceptionistDeskContent() {
                 </div>
                 <div>
                   <h3 className="text-sm font-bold text-white tracking-tight">External Lab Parcel QC Gate</h3>
-                  <p className="text-[11px] text-slate-400">Hard verification prior to patient entry</p>
+                  <p className="text-[11px] text-[#62625b]">Hard verification prior to patient entry</p>
                 </div>
               </div>
               <span className="glass-pill px-2.5 py-0.5 text-[10px] font-mono text-amber-300">
@@ -702,7 +702,7 @@ function ReceptionistDeskContent() {
                         {isVerified ? 'QC_VERIFIED' : 'PENDING_VERIFICATION'}
                       </span>
                     </div>
-                    <div className="text-[11px] text-slate-400 mb-2.5">Vendor: {order.lab_vendor_name}</div>
+                    <div className="text-[11px] text-[#62625b] mb-2.5">Vendor: {order.lab_vendor_name}</div>
                     {!isVerified && (
                       <button
                         onClick={() => handleVerifyLab(order.id)}
@@ -732,10 +732,10 @@ function ReceptionistDeskContent() {
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-white tracking-tight">Active Queue Tokens Roster</h3>
-                  <p className="text-[11px] text-slate-400">Live sequential & priority interleaved roster</p>
+                  <p className="text-[11px] text-[#62625b]">Live sequential & priority interleaved roster</p>
                 </div>
               </div>
-              <span className="text-xs font-mono text-slate-400 tabular-nums">{tokens.length} Active in Flow</span>
+              <span className="text-xs font-mono text-[#62625b] tabular-nums">{tokens.length} Active in Flow</span>
             </div>
 
             <div className="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
@@ -757,7 +757,7 @@ function ReceptionistDeskContent() {
                           </span>
                         )}
                       </div>
-                      <div className="text-[11px] text-slate-400 flex items-center gap-2 mt-0.5">
+                      <div className="text-[11px] text-[#62625b] flex items-center gap-2 mt-0.5">
                         <span className="text-emerald-400 font-medium">● {token.status}</span>
                         <span>•</span>
                         <span className="tabular-nums">Est. Wait: ~{Math.round(token.estimated_wait_secs / 60)}m</span>
@@ -767,7 +767,7 @@ function ReceptionistDeskContent() {
 
                   <div className="flex items-center gap-2">
                     {token.assigned_waiting_seat && (
-                      <span className="bg-[#111318] text-slate-300 font-mono text-xs px-2.5 py-1 rounded-xl border border-white/[0.08] tabular-nums">
+                      <span className="bg-[#111318] text-[#33332e] font-mono text-xs px-2.5 py-1 rounded-xl border border-white/[0.08] tabular-nums">
                         Seat {token.assigned_waiting_seat}
                       </span>
                     )}
@@ -798,9 +798,9 @@ function ReceptionistDeskContent() {
                         })
                       }
                       title="Print 58mm Thermal Token"
-                      className="p-1.5 glass-panel-nested hover:bg-white/[0.08] text-slate-300 border border-white/[0.08] rounded-xl text-xs cursor-pointer transition-all"
+                      className="p-1.5 glass-panel-nested hover:bg-white/[0.08] text-[#33332e] border border-white/[0.08] rounded-xl text-xs cursor-pointer transition-all"
                     >
-                      <Printer className="w-3.5 h-3.5 text-slate-300" />
+                      <Printer className="w-3.5 h-3.5 text-[#33332e]" />
                     </button>
                   </div>
                 </div>

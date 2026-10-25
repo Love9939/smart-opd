@@ -121,22 +121,22 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
-      <div className="bg-slate-900 border border-slate-700 w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div className="bg-[#f6f6f3] border border-slate-700 w-full max-w-5xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
         {/* Header */}
-        <div className="p-5 border-b border-slate-800 bg-slate-950/70 flex items-center justify-between">
+        <div className="p-5 border-b border-slate-800 bg-[#f6f6f3]/70 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[#103c25]">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
                 <h2 className="text-lg font-bold text-slate-100">Immutable Audit Ledger & Pilferage Shield</h2>
-                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-[#c7f0da] text-emerald-300 border border-[#a3e6c2]">
                   APPEND-ONLY ENFORCED
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
-                PostgreSQL trigger <code className="text-slate-300">trg_immutable_token_audit</code> rejects tampering, fee waivers & deletions
+              <p className="text-xs text-[#62625b]">
+                PostgreSQL trigger <code className="text-[#33332e]">trg_immutable_token_audit</code> rejects tampering, fee waivers & deletions
               </p>
             </div>
           </div>
@@ -145,14 +145,14 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
             <button
               onClick={fetchAuditEvents}
               disabled={loading}
-              className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 rounded-lg bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#33332e] text-xs font-medium flex items-center gap-1.5 transition-colors"
             >
               <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
               Refresh
             </button>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="p-1.5 rounded-lg text-[#62625b] hover:text-[#000000] hover:bg-[#e5e5e0] transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -160,45 +160,45 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
         </div>
 
         {/* Security Banner & Summary Stats */}
-        <div className="p-4 bg-slate-950/40 border-b border-slate-800/80 grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
-          <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 flex items-center gap-3">
+        <div className="p-4 bg-[#f6f6f3]/40 border-b border-slate-800/80 grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+          <div className="p-3 rounded-xl bg-[#e5e5e0]/40 border border-slate-700/50 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center">
               <FileText className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-slate-400">Total Audit Logs</div>
+              <div className="text-[#62625b]">Total Audit Logs</div>
               <div className="text-sm font-bold text-white">{events.length} Recorded</div>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+          <div className="p-3 rounded-xl bg-[#e5e5e0]/40 border border-slate-700/50 flex items-center gap-3">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-[#103c25] flex items-center justify-center">
               <Lock className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-slate-400">Database Integrity</div>
-              <div className="text-sm font-bold text-emerald-400">100% Tamper Proof</div>
+              <div className="text-[#62625b]">Database Integrity</div>
+              <div className="text-sm font-bold text-[#103c25]">100% Tamper Proof</div>
             </div>
           </div>
 
-          <div className={`p-3 rounded-xl border flex items-center gap-3 ${pilferageCount > 0 ? 'bg-amber-500/10 border-amber-500/30' : 'bg-slate-800/40 border-slate-700/50'}`}>
-            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${pilferageCount > 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-slate-700 text-slate-400'}`}>
+          <div className={`p-3 rounded-xl border flex items-center gap-3 ${pilferageCount > 0 ? 'bg-amber-500/10 border-amber-500/30' : 'bg-[#e5e5e0]/40 border-slate-700/50'}`}>
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center ${pilferageCount > 0 ? 'bg-amber-500/20 text-amber-400' : 'bg-[#c8c8c1] text-[#62625b]'}`}>
               <AlertTriangle className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-slate-400">Fee Waiver Alerts</div>
-              <div className={`text-sm font-bold ${pilferageCount > 0 ? 'text-amber-300' : 'text-slate-300'}`}>
+              <div className="text-[#62625b]">Fee Waiver Alerts</div>
+              <div className={`text-sm font-bold ${pilferageCount > 0 ? 'text-amber-300' : 'text-[#33332e]'}`}>
                 {pilferageCount} Shadow Alert{pilferageCount !== 1 ? 's' : ''}
               </div>
             </div>
           </div>
 
-          <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 flex items-center gap-3">
+          <div className="p-3 rounded-xl bg-[#e5e5e0]/40 border border-slate-700/50 flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-purple-500/10 text-purple-400 flex items-center justify-center">
               <Activity className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-slate-400">Doctor Mobile Push</div>
+              <div className="text-[#62625b]">Doctor Mobile Push</div>
               <div className="text-sm font-bold text-purple-300">Live WebSockets</div>
             </div>
           </div>
@@ -220,7 +220,7 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
                 className={`px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap transition-all ${
                   filterType === tab.id
                     ? 'bg-blue-600 text-white shadow-md'
-                    : 'bg-slate-800/60 text-slate-400 hover:text-white hover:bg-slate-800'
+                    : 'bg-[#e5e5e0]/60 text-[#62625b] hover:text-[#000000] hover:bg-[#e5e5e0]'
                 }`}
               >
                 {tab.label}
@@ -229,13 +229,13 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
           </div>
 
           <div className="relative w-full md:w-64">
-            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+            <Search className="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-[#62625b]" />
             <input
               type="text"
               placeholder="Search audit trail..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-9 pr-3 py-1.5 bg-slate-950 border border-slate-700 rounded-lg text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500"
+              className="w-full pl-9 pr-3 py-1.5 bg-[#f6f6f3] border border-slate-700 rounded-lg text-xs text-[#211922] placeholder-slate-500 focus:outline-none focus:border-blue-500"
             />
           </div>
         </div>
@@ -243,7 +243,7 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
         {/* Events Table */}
         <div className="overflow-y-auto flex-1 p-4 space-y-2.5">
           {filteredEvents.length === 0 ? (
-            <div className="text-center py-12 text-slate-500 text-xs">
+            <div className="text-center py-12 text-[#91918c] text-xs">
               No audit events matched your search filter.
             </div>
           ) : (
@@ -258,12 +258,12 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
                   className={`p-3.5 rounded-xl border transition-all text-xs ${
                     isAlert
                       ? 'bg-amber-950/20 border-amber-500/40 shadow-sm shadow-amber-900/10'
-                      : 'bg-slate-800/30 border-slate-800 hover:border-slate-700/80'
+                      : 'bg-[#e5e5e0]/30 border-slate-800 hover:border-slate-700/80'
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-[10px] text-slate-500 font-semibold">
+                      <span className="font-mono text-[10px] text-[#91918c] font-semibold">
                         #{String(ev.id).padStart(4, '0')}
                       </span>
 
@@ -272,22 +272,22 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
                           isAlert
                             ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 animate-pulse'
                             : ev.action_type === 'FEE_COLLECTED'
-                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                            ? 'bg-[#c7f0da] text-emerald-300 border border-emerald-500/30'
                             : ev.action_type.includes('EMERGENCY')
                             ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
-                            : 'bg-slate-700/60 text-slate-300'
+                            : 'bg-[#c8c8c1]/60 text-[#33332e]'
                         }`}
                       >
                         {ev.action_type.replace(/_/g, ' ')}
                       </span>
 
-                      <span className="text-slate-400 flex items-center gap-1 text-[11px]">
-                        <UserCheck className="w-3 h-3 text-slate-500" />
-                        <span className="font-semibold text-slate-300">{ev.actor_role}</span>
+                      <span className="text-[#62625b] flex items-center gap-1 text-[11px]">
+                        <UserCheck className="w-3 h-3 text-[#91918c]" />
+                        <span className="font-semibold text-[#33332e]">{ev.actor_role}</span>
                       </span>
                     </div>
 
-                    <div className="text-[11px] text-slate-400 font-mono">
+                    <div className="text-[11px] text-[#62625b] font-mono">
                       {new Date(ev.created_at).toLocaleTimeString([], {
                         hour: '2-digit',
                         minute: '2-digit',
@@ -307,21 +307,21 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
                   )}
 
                   {/* Payload Details */}
-                  <div className="bg-slate-950/60 rounded-lg p-2.5 font-mono text-[11px] text-slate-300 border border-slate-900 overflow-x-auto">
+                  <div className="bg-[#f6f6f3]/60 rounded-lg p-2.5 font-mono text-[11px] text-[#33332e] border border-slate-900 overflow-x-auto">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                       <div>
-                        <span className="text-slate-500">Payload State: </span>
+                        <span className="text-[#91918c]">Payload State: </span>
                         {Object.entries(ev.new_payload).map(([k, v]) => (
                           <span key={k} className="mr-3">
-                            <span className="text-slate-400">{k}:</span>{' '}
+                            <span className="text-[#62625b]">{k}:</span>{' '}
                             <span className="text-blue-300 font-medium">{String(v)}</span>
                           </span>
                         ))}
                       </div>
 
                       {ev.old_payload && (
-                        <div className="text-slate-400">
-                          <span className="text-slate-500">Previous: </span>
+                        <div className="text-[#62625b]">
+                          <span className="text-[#91918c]">Previous: </span>
                           {JSON.stringify(ev.old_payload)}
                         </div>
                       )}
@@ -334,14 +334,14 @@ export function ImmutableAuditModal({ clinicId, isOpen, onClose }: ImmutableAudi
         </div>
 
         {/* Footer */}
-        <div className="p-3.5 border-t border-slate-800 bg-slate-950/80 flex items-center justify-between text-xs text-slate-400">
+        <div className="p-3.5 border-t border-slate-800 bg-[#fbfbf9]/95 flex items-center justify-between text-xs text-[#62625b]">
           <div className="flex items-center gap-2">
-            <Lock className="w-3.5 h-3.5 text-emerald-400" />
+            <Lock className="w-3.5 h-3.5 text-[#103c25]" />
             <span>Guaranteed Append-Only: Database rejects any manual row mutation or DROP action.</span>
           </div>
           <button
             onClick={onClose}
-            className="px-4 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold transition-colors"
+            className="px-4 py-1.5 rounded-lg bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#211922] text-xs font-semibold transition-colors"
           >
             Close Audit Monitor
           </button>

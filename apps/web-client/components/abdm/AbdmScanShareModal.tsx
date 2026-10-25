@@ -64,8 +64,8 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfbf9]/95 backdrop-blur-md p-4 animate-fadeIn">
+      <div className="bg-[#f6f6f3] border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative overflow-hidden">
         {/* Glow accent */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -73,31 +73,31 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
         <div className="flex items-start justify-between mb-5 border-b border-slate-800 pb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-orange-500 to-emerald-500 p-0.5">
-              <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center font-bold text-xs text-white">
+              <div className="w-full h-full bg-[#f6f6f3] rounded-[14px] flex items-center justify-center font-bold text-xs text-white">
                 ABHA
               </div>
             </div>
             <div>
               <h3 className="text-base font-extrabold text-white flex items-center gap-2">
                 <span>ABDM Scan & Share (M1)</span>
-                <span className="text-[10px] font-mono bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
+                <span className="text-[10px] font-mono bg-[#c7f0da] text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-500/30">
                   Government Certified
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">Scan QR via ABHA / Aarogya Setu for Instant Demographic Sync</p>
+              <p className="text-xs text-[#62625b]">Scan QR via ABHA / Aarogya Setu for Instant Demographic Sync</p>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white text-sm"
+            className="w-8 h-8 rounded-full bg-[#e5e5e0] hover:bg-[#c8c8c1] flex items-center justify-center text-[#62625b] hover:text-[#000000] text-sm"
           >
             ✕
           </button>
         </div>
 
         {/* Dynamic ABDM QR Display */}
-        <div className="bg-slate-950 border border-slate-800 rounded-2xl p-5 flex flex-col items-center text-center mb-5">
+        <div className="bg-[#f6f6f3] border border-slate-800 rounded-2xl p-5 flex flex-col items-center text-center mb-5">
           {/* SVG Representation of Counter QR */}
           <div className="w-48 h-48 bg-white p-3 rounded-2xl shadow-xl flex items-center justify-center relative mb-3">
             <svg viewBox="0 0 100 100" className="w-full h-full">
@@ -132,21 +132,21 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
           </div>
 
           <span className="font-mono text-xs font-bold text-cyan-300">HIP ID: IN291000129 • SmartOPD Counter 01</span>
-          <p className="text-[11px] text-slate-400 mt-1">
+          <p className="text-[11px] text-[#62625b] mt-1">
             Patients open ABHA or Aarogya Setu app &gt; Tap 'Scan QR' &gt; Share Profile
           </p>
         </div>
 
         {/* Demo Fast-Switch Profile Selector */}
         <div className="mb-5">
-          <label className="block text-xs font-bold text-slate-300 mb-2">Simulate Patient Scan With Profile:</label>
+          <label className="block text-xs font-bold text-[#33332e] mb-2">Simulate Patient Scan With Profile:</label>
           <div className="grid grid-cols-3 gap-2">
             <button
               onClick={() => setSelectedDemoProfile('senior')}
               className={`p-2.5 rounded-xl border text-left transition-all ${
                 selectedDemoProfile === 'senior'
                   ? 'bg-rose-500/20 border-rose-500/50 text-rose-200'
-                  : 'bg-slate-950 border-slate-800 text-slate-400'
+                  : 'bg-[#f6f6f3] border-slate-800 text-[#62625b]'
               }`}
             >
               <div className="text-xs font-bold">Savitri Bai (72y)</div>
@@ -157,7 +157,7 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
               className={`p-2.5 rounded-xl border text-left transition-all ${
                 selectedDemoProfile === 'general'
                   ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-200'
-                  : 'bg-slate-950 border-slate-800 text-slate-400'
+                  : 'bg-[#f6f6f3] border-slate-800 text-[#62625b]'
               }`}
             >
               <div className="text-xs font-bold">Dr. Vikram (46y)</div>
@@ -168,7 +168,7 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
               className={`p-2.5 rounded-xl border text-left transition-all ${
                 selectedDemoProfile === 'pediatric'
                   ? 'bg-purple-500/20 border-purple-500/50 text-purple-200'
-                  : 'bg-slate-950 border-slate-800 text-slate-400'
+                  : 'bg-[#f6f6f3] border-slate-800 text-[#62625b]'
               }`}
             >
               <div className="text-xs font-bold">Aarav (8y)</div>
@@ -178,8 +178,8 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
         </div>
 
         {/* DPDP Act 2023 Digital Consent Notice */}
-        <div className="flex items-center gap-2 p-3 bg-slate-950/80 rounded-xl border border-slate-800 text-[11px] text-slate-400 mb-5">
-          <ShieldCheck className="w-4 h-4 text-emerald-400 shrink-0" />
+        <div className="flex items-center gap-2 p-3 bg-[#fbfbf9]/95 rounded-xl border border-slate-800 text-[11px] text-[#62625b] mb-5">
+          <ShieldCheck className="w-4 h-4 text-[#103c25] shrink-0" />
           <span>Indian DPDP Act 2023 Compliant: Demographic data shared under explicit patient consent audit.</span>
         </div>
 
@@ -187,7 +187,7 @@ export const AbdmScanShareModal: React.FC<AbdmScanShareModalProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs"
+            className="flex-1 py-2.5 rounded-xl bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#33332e] font-bold text-xs"
           >
             Cancel
           </button>

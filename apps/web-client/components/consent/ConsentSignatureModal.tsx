@@ -96,8 +96,8 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-md p-4 animate-fadeIn">
-      <div className="bg-slate-900 border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#f6f6f3]/85 backdrop-blur-md p-4 animate-fadeIn">
+      <div className="bg-[#f6f6f3] border border-slate-800 rounded-3xl max-w-lg w-full p-6 shadow-2xl relative">
         {/* Header */}
         <div className="flex items-start justify-between mb-4 border-b border-slate-800 pb-3">
           <div className="flex items-center gap-2.5">
@@ -106,31 +106,31 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
             </div>
             <div>
               <h3 className="text-base font-extrabold text-white">Clinical Informed Consent</h3>
-              <p className="text-xs text-slate-400">Indian DPDP Act 2023 Digital Audit Protocol</p>
+              <p className="text-xs text-[#62625b]">Indian DPDP Act 2023 Digital Audit Protocol</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="w-7 h-7 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs"
+            className="w-7 h-7 rounded-full bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#62625b] hover:text-[#000000] flex items-center justify-center text-xs"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
         {/* Procedure & Patient Info */}
-        <div className="bg-slate-950 p-3.5 rounded-2xl border border-slate-800 mb-4 text-xs">
+        <div className="bg-[#f6f6f3] p-3.5 rounded-2xl border border-slate-800 mb-4 text-xs">
           <div className="flex items-center justify-between mb-1">
-            <span className="text-slate-400">Patient Name:</span>
+            <span className="text-[#62625b]">Patient Name:</span>
             <span className="font-bold text-white">{patientName}</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400">Procedure:</span>
+            <span className="text-[#62625b]">Procedure:</span>
             <span className="font-bold text-cyan-300 font-mono">{procedureName}</span>
           </div>
         </div>
 
         {/* Consent Declaration */}
-        <div className="p-3.5 bg-slate-950/60 rounded-2xl border border-slate-800/80 mb-4 text-[11px] text-slate-300 leading-relaxed max-h-24 overflow-y-auto">
+        <div className="p-3.5 bg-[#f6f6f3]/60 rounded-2xl border border-slate-800/80 mb-4 text-[11px] text-[#33332e] leading-relaxed max-h-24 overflow-y-auto">
           I hereby give my informed digital consent for the clinical consultation, local anesthesia administration, and
           dental/medical procedures at SmartOPD & DentalFlow. I have been informed of the clinical objectives, potential
           risks, and alternative treatment options under Section 6 of the Indian Digital Personal Data Protection (DPDP) Act
@@ -140,17 +140,17 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
         {/* E-Signature Canvas */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-1.5">
-            <label className="text-xs font-bold text-slate-300">Patient / Guardian E-Signature:</label>
+            <label className="text-xs font-bold text-[#33332e]">Patient / Guardian E-Signature:</label>
             <button
               onClick={handleClear}
-              className="flex items-center gap-1 text-[11px] text-slate-400 hover:text-white"
+              className="flex items-center gap-1 text-[11px] text-[#62625b] hover:text-[#000000]"
             >
               <RotateCcw className="w-3 h-3" />
               <span>Clear</span>
             </button>
           </div>
 
-          <div className="border border-cyan-500/40 rounded-2xl bg-slate-950 overflow-hidden shadow-inner relative">
+          <div className="border border-cyan-500/40 rounded-2xl bg-[#f6f6f3] overflow-hidden shadow-inner relative">
             <canvas
               ref={canvasRef}
               width={450}
@@ -165,7 +165,7 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
               className="w-full h-36 cursor-crosshair touch-none"
             />
             {!hasSignature && (
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-slate-600 text-xs font-mono">
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none text-[#dadad3] text-xs font-mono">
                 ✍️ Sign here with stylus, finger, or mouse
               </div>
             )}
@@ -173,7 +173,7 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
         </div>
 
         {/* DPDP Consent Acceptance Checkbox */}
-        <div className="flex items-center gap-2 mb-5 p-2 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+        <div className="flex items-center gap-2 mb-5 p-2 bg-[#f6f6f3] rounded-xl border border-slate-800 text-[11px] text-[#62625b]">
           <input
             type="checkbox"
             id="dpdp-check"
@@ -190,7 +190,7 @@ export const ConsentSignatureModal: React.FC<ConsentSignatureModalProps> = ({
         <div className="flex items-center gap-3">
           <button
             onClick={onClose}
-            className="flex-1 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs"
+            className="flex-1 py-2.5 rounded-xl bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#33332e] font-bold text-xs"
           >
             Cancel
           </button>

@@ -61,7 +61,7 @@ export const PwaInstallPrompt: React.FC = () => {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 animate-slideUp">
-      <div className="bg-slate-900/95 border border-cyan-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex items-center justify-between gap-4">
+      <div className="bg-[#f6f6f3]/95 border border-cyan-500/40 rounded-2xl p-4 shadow-2xl backdrop-blur-xl flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-teal-400 flex items-center justify-center text-slate-950 font-black shadow-lg shadow-cyan-500/20 shrink-0">
             <Smartphone className="w-5 h-5" />
@@ -73,7 +73,7 @@ export const PwaInstallPrompt: React.FC = () => {
                 PWA
               </span>
             </div>
-            <p className="text-[11px] text-slate-400 mt-0.5">
+            <p className="text-[11px] text-[#62625b] mt-0.5">
               Zero-latency offline outbox, Web Bluetooth 58mm printer & 1-tap launch
             </p>
           </div>
@@ -89,7 +89,7 @@ export const PwaInstallPrompt: React.FC = () => {
           </button>
           <button
             onClick={() => setIsDismissed(true)}
-            className="w-7 h-7 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center text-xs"
+            className="w-7 h-7 rounded-lg bg-[#e5e5e0] hover:bg-[#c8c8c1] text-[#62625b] hover:text-[#000000] flex items-center justify-center text-xs"
           >
             <X className="w-3.5 h-3.5" />
           </button>

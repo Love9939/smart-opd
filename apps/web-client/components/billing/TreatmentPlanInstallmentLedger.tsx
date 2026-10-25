@@ -65,7 +65,7 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
   };
 
   return (
-    <div className="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 shadow-2xl backdrop-blur-md">
+    <div className="bg-[#f6f6f3] border border-slate-800 rounded-3xl p-6 shadow-2xl backdrop-blur-md">
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 border-b border-slate-800 pb-4">
         <div>
@@ -73,22 +73,22 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
             Multi-Sitting Procedure Ledger
           </span>
           <h3 className="text-lg font-black text-white mt-0.5">Molar Rotary RCT + Zirconia Crown (#36)</h3>
-          <p className="text-xs text-slate-400">Split-payment installment tracking eliminating front-desk balance disputes</p>
+          <p className="text-xs text-[#62625b]">Split-payment installment tracking eliminating front-desk balance disputes</p>
         </div>
 
         {/* Running Balance Banner */}
         <div className="flex items-center gap-3">
-          <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-right">
-            <span className="text-[10px] text-slate-400 block uppercase font-bold">Total Estimated</span>
+          <div className="bg-[#f6f6f3] p-3 rounded-2xl border border-slate-800 text-right">
+            <span className="text-[10px] text-[#62625b] block uppercase font-bold">Total Estimated</span>
             <span className="font-mono font-black text-white text-base">₹{totalEstimated.toLocaleString('en-IN')}</span>
           </div>
 
-          <div className="bg-slate-950 p-3 rounded-2xl border border-slate-800 text-right">
-            <span className="text-[10px] text-slate-400 block uppercase font-bold">Paid So Far</span>
-            <span className="font-mono font-black text-emerald-400 text-base">₹{totalPaid.toLocaleString('en-IN')}</span>
+          <div className="bg-[#f6f6f3] p-3 rounded-2xl border border-slate-800 text-right">
+            <span className="text-[10px] text-[#62625b] block uppercase font-bold">Paid So Far</span>
+            <span className="font-mono font-black text-[#103c25] text-base">₹{totalPaid.toLocaleString('en-IN')}</span>
           </div>
 
-          <div className="bg-slate-950 p-3 rounded-2xl border border-amber-500/40 text-right">
+          <div className="bg-[#f6f6f3] p-3 rounded-2xl border border-amber-500/40 text-right">
             <span className="text-[10px] text-amber-300 block uppercase font-bold">Balance Due</span>
             <span className="font-mono font-black text-amber-300 text-base">₹{balanceDue.toLocaleString('en-IN')}</span>
           </div>
@@ -97,7 +97,7 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
 
       {/* Toast Notification */}
       {receiptSentMessage && (
-        <div className="mb-4 p-3 bg-emerald-500/20 border border-emerald-500/40 rounded-2xl text-xs font-bold text-emerald-200 animate-fadeIn">
+        <div className="mb-4 p-3 bg-[#c7f0da] border border-[#a3e6c2] rounded-2xl text-xs font-bold text-[#103c25] animate-fadeIn">
           {receiptSentMessage}
         </div>
       )}
@@ -113,20 +113,20 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
               key={m.sitting_no}
               className={`p-4 rounded-2xl border flex items-center justify-between transition-all ${
                 isDone
-                  ? 'bg-slate-950/60 border-slate-800 text-slate-300'
+                  ? 'bg-[#f6f6f3]/60 border-slate-800 text-[#33332e]'
                   : isActive
                   ? 'bg-gradient-to-r from-cyan-950/40 to-slate-900 border-cyan-500/40 shadow-lg shadow-cyan-500/10'
-                  : 'bg-slate-950/30 border-slate-900 text-slate-500'
+                  : 'bg-[#f6f6f3]/30 border-slate-900 text-[#91918c]'
               }`}
             >
               <div className="flex items-center gap-3.5">
                 <span
                   className={`w-9 h-9 rounded-xl flex items-center justify-center font-mono font-bold text-xs ${
                     isDone
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40'
+                      ? 'bg-[#c7f0da] text-[#103c25] border border-[#a3e6c2]'
                       : isActive
                       ? 'bg-cyan-500 text-slate-950 font-black shadow'
-                      : 'bg-slate-800 text-slate-500'
+                      : 'bg-[#e5e5e0] text-[#91918c]'
                   }`}
                 >
                   {isDone ? <Check className="w-4 h-4" /> : `#${m.sitting_no}`}
@@ -140,7 +140,7 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
                       </span>
                     )}
                   </div>
-                  <div className="text-xs text-slate-400 mt-0.5">
+                  <div className="text-xs text-[#62625b] mt-0.5">
                     {isDone ? `Completed on ${m.completed_at}` : 'Scheduled sitting milestone'}
                   </div>
                 </div>
@@ -167,14 +167,14 @@ export const TreatmentPlanInstallmentLedger: React.FC = () => {
 
       {/* Actions */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-slate-800">
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+        <div className="flex items-center gap-2 text-xs text-[#62625b]">
+          <ShieldCheck className="w-4 h-4 text-[#103c25]" />
           <span>Every sitting payment auto-updates patient balance in IndexedDB and Axum ledger.</span>
         </div>
 
         <button
           onClick={handleSendWhatsAppReceipt}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-teal-300 font-bold rounded-xl text-xs border border-teal-500/30 shadow cursor-pointer"
+          className="flex items-center gap-2 px-4 py-2 bg-[#e5e5e0] hover:bg-[#c8c8c1] text-teal-300 font-bold rounded-xl text-xs border border-teal-500/30 shadow cursor-pointer"
         >
           <MessageSquare className="w-4 h-4 text-teal-400" />
           <span>Dispatch WhatsApp Digital Receipt</span>

@@ -240,7 +240,7 @@ function WaitingRoomTvContent() {
                 Waiting Lounge TV
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-medium">
+            <p className="text-xs text-[#62625b] font-medium">
               Multi-Operatory Live Status • Dr. Sneha Rao (Dentistry) & Dr. Arjun Reddy (Physician)
             </p>
           </div>
@@ -253,14 +253,14 @@ function WaitingRoomTvContent() {
             className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-semibold transition-all border cursor-pointer ${
               ttsAudioEnabled
                 ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/40 shadow-sm'
-                : 'glass-panel-nested text-slate-400 hover:text-white border-white/[0.08]'
+                : 'glass-panel-nested text-[#62625b] hover:text-[#000000] border-white/[0.08]'
             }`}
           >
             {ttsAudioEnabled ? <Volume2 className="w-4 h-4 text-emerald-400" /> : <VolumeX className="w-4 h-4" />}
             <span>{ttsAudioEnabled ? 'Voice Broadcast ON' : 'Tap to Enable Audio'}</span>
           </button>
 
-          <div className="flex items-center gap-2 text-slate-300 text-xs font-mono glass-panel-nested px-3.5 py-2 rounded-xl border border-white/[0.08] tabular-nums">
+          <div className="flex items-center gap-2 text-[#33332e] text-xs font-mono glass-panel-nested px-3.5 py-2 rounded-xl border border-white/[0.08] tabular-nums">
             <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
             <span>SUB-5MS SYNC</span>
           </div>
@@ -283,7 +283,7 @@ function WaitingRoomTvContent() {
           </div>
 
           <div className="text-right">
-            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider block">Proceed Directly To</span>
+            <span className="text-[11px] uppercase font-bold text-[#62625b] tracking-wider block">Proceed Directly To</span>
             <div className="text-xl font-extrabold text-amber-200 glass-panel-nested px-4 py-1.5 rounded-xl border border-amber-400/30">
               👉 {currentCallBanner.chair}
             </div>
@@ -296,11 +296,11 @@ function WaitingRoomTvContent() {
         {/* Left 60% Panel: Active Cabins & Dental Chairs */}
         <div className="col-span-7 flex flex-col justify-between space-y-4">
           <div className="flex items-center justify-between border-b border-white/[0.06] pb-2">
-            <h2 className="text-base font-bold text-slate-200 tracking-tight flex items-center gap-2">
+            <h2 className="text-base font-bold text-[#211922] tracking-tight flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-400" />
               <span>Active Consultation Cabins & Operatory Chairs</span>
             </h2>
-            <span className="text-xs font-mono text-slate-400">Hardware Allocation Matrix</span>
+            <span className="text-xs font-mono text-[#62625b]">Hardware Allocation Matrix</span>
           </div>
 
           <div className="grid grid-cols-1 gap-3.5 flex-1">
@@ -337,12 +337,12 @@ function WaitingRoomTvContent() {
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5 font-medium">{chair.doctor_name}</div>
+                      <div className="text-xs text-[#62625b] mt-0.5 font-medium">{chair.doctor_name}</div>
                     </div>
 
                     {isOccupied && chair.active_token && (
                       <div className="text-right">
-                        <span className="text-[10px] uppercase font-bold text-slate-400 block">Serving Now</span>
+                        <span className="text-[10px] uppercase font-bold text-[#62625b] block">Serving Now</span>
                         <div className="text-2xl font-mono font-black text-emerald-300 tabular-nums">
                           {chair.active_token}
                         </div>
@@ -389,7 +389,7 @@ function WaitingRoomTvContent() {
                 <Clock className="w-4 h-4 text-emerald-400" />
                 <h2 className="text-base font-bold text-white tracking-tight">Next Up in Line</h2>
               </div>
-              <span className="text-xs font-mono text-slate-400">Allocated Seats</span>
+              <span className="text-xs font-mono text-[#62625b]">Allocated Seats</span>
             </div>
 
             <div className="space-y-2.5">
@@ -421,15 +421,15 @@ function WaitingRoomTvContent() {
                           </span>
                         )}
                       </div>
-                      <div className="text-xs text-slate-400 mt-0.5 flex items-center gap-1.5">
-                        <Armchair className="w-3 h-3 text-slate-400" />
-                        <span className="font-medium text-slate-300">Seat {item.seat_code}</span>
+                      <div className="text-xs text-[#62625b] mt-0.5 flex items-center gap-1.5">
+                        <Armchair className="w-3 h-3 text-[#62625b]" />
+                        <span className="font-medium text-[#33332e]">Seat {item.seat_code}</span>
                       </div>
                     </div>
                   </div>
 
                   <div className="text-right">
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold block">Est. Wait</span>
+                    <span className="text-[10px] text-[#62625b] uppercase font-semibold block">Est. Wait</span>
                     <div className="text-sm font-mono font-bold text-amber-300 tabular-nums">~{item.est_wait_mins} mins</div>
                   </div>
                 </div>
@@ -445,7 +445,7 @@ function WaitingRoomTvContent() {
               </div>
               <div>
                 <div className="text-xs font-bold text-white">Track on your phone (Zero-App)</div>
-                <div className="text-[11px] text-slate-400">Scan QR at reception to track live queue sequence</div>
+                <div className="text-[11px] text-[#62625b]">Scan QR at reception to track live queue sequence</div>
               </div>
             </div>
             <span className="font-mono text-xs text-emerald-300 glass-pill px-3 py-1">
@@ -456,7 +456,7 @@ function WaitingRoomTvContent() {
       </div>
 
       {/* Bottom Hygiene & Crowd Ticker */}
-      <footer className="glass-panel border-x-0 border-b-0 rounded-none backdrop-blur-xl px-8 py-3 flex items-center justify-between text-xs text-slate-300 relative z-20">
+      <footer className="glass-panel border-x-0 border-b-0 rounded-none backdrop-blur-xl px-8 py-3 flex items-center justify-between text-xs text-[#33332e] relative z-20">
         <div className="flex items-center gap-6">
           <div className="flex items-center gap-2 text-emerald-400 font-medium">
             <ShieldCheck className="w-4 h-4" />
@@ -468,7 +468,7 @@ function WaitingRoomTvContent() {
           </div>
         </div>
 
-        <div className="text-slate-400 font-medium">
+        <div className="text-[#62625b] font-medium">
           Peak Crowd Policy: Kindly limit to 1 attendant per patient in the waiting lobby.
         </div>
       </footer>

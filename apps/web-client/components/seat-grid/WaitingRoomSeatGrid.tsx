@@ -28,7 +28,7 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
       case 'IsolationFever':
         return <AlertTriangle className="w-3.5 h-3.5 text-orange-400" />;
       default:
-        return <Armchair className="w-3.5 h-3.5 text-slate-400" />;
+        return <Armchair className="w-3.5 h-3.5 text-[#62625b]" />;
     }
   };
 
@@ -44,7 +44,7 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
       case 'NumbingLounge':
         return 'bg-amber-500/10 text-amber-200 border-amber-500/25 hover:border-amber-400/50 hover:bg-amber-500/15';
       default:
-        return 'bg-emerald-500/10 text-emerald-200 border-emerald-500/25 hover:border-emerald-400/50 hover:bg-emerald-500/15';
+        return 'bg-emerald-500/10 text-[#103c25] border-emerald-500/25 hover:border-emerald-400/50 hover:bg-emerald-500/15';
     }
   };
 
@@ -54,12 +54,12 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
       <div className="flex flex-wrap items-center justify-between gap-4 mb-5 border-b border-white/[0.06] pb-4">
         <div>
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+            <div className="w-8 h-8 rounded-xl bg-emerald-500/15 border border-emerald-500/30 flex items-center justify-center text-[#103c25]">
               <Armchair className="w-4 h-4" />
             </div>
             <div>
               <h3 className="text-base font-bold text-slate-100 tracking-tight">Waiting Lobby Physical Graph</h3>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-[#62625b]">
                 Directed spatial allocator & priority zoning (A-01, P-01, N-01)
               </p>
             </div>
@@ -69,7 +69,7 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
         {/* Occupancy Indicator with Tabular Metric */}
         <div className="flex items-center gap-3.5 glass-panel-nested rounded-2xl px-4 py-2.5 border border-white/[0.08]">
           <div className="text-right">
-            <span className="text-[10px] text-slate-400 uppercase font-semibold tracking-wider block">Lobby Load</span>
+            <span className="text-[10px] text-[#62625b] uppercase font-semibold tracking-wider block">Lobby Load</span>
             <div className="text-sm font-extrabold text-white flex items-center justify-end gap-1.5 tabular-nums">
               <span>{occupancyPct}%</span>
               <span
@@ -79,7 +79,7 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
               />
             </div>
           </div>
-          <div className="w-20 bg-slate-900/80 rounded-full h-2 p-0.5 border border-white/[0.05] overflow-hidden">
+          <div className="w-20 bg-[#f6f6f3] rounded-full h-2 p-0.5 border border-white/[0.05] overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 occupancyPct > 80 ? 'bg-rose-500' : occupancyPct > 50 ? 'bg-amber-400' : 'bg-emerald-400'
@@ -132,7 +132,7 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
                     <span>Occupied</span>
                   </span>
                 ) : (
-                  <span className="text-emerald-400/80 group-hover:text-emerald-300">Free</span>
+                  <span className="text-[#103c25]/80 group-hover:text-emerald-300">Free</span>
                 )}
               </div>
 
@@ -152,26 +152,26 @@ export const WaitingRoomSeatGrid: React.FC<WaitingRoomSeatGridProps> = ({
       </div>
 
       {/* Legend with Glass Badges */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mt-5 pt-3.5 border-t border-white/[0.06] text-xs text-slate-400">
+      <div className="flex flex-wrap items-center justify-between gap-4 mt-5 pt-3.5 border-t border-white/[0.06] text-xs text-[#62625b]">
         <div className="flex items-center gap-4 flex-wrap">
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block" />
-            <span className="text-slate-300 text-[11px]">Available</span>
+            <span className="text-[#33332e] text-[11px]">Available</span>
           </div>
           <div className="flex items-center gap-1.5">
             <span className="w-2 h-2 rounded-full bg-amber-400 inline-block" />
-            <span className="text-slate-300 text-[11px]">Occupied</span>
+            <span className="text-[#33332e] text-[11px]">Occupied</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Heart className="w-3 h-3 text-rose-400" />
-            <span className="text-slate-300 text-[11px]">P-Zone (Priority)</span>
+            <span className="text-[#33332e] text-[11px]">P-Zone (Priority)</span>
           </div>
           <div className="flex items-center gap-1.5">
             <ShieldAlert className="w-3 h-3 text-amber-400" />
-            <span className="text-slate-300 text-[11px]">N-Zone (Dental Numbing)</span>
+            <span className="text-[#33332e] text-[11px]">N-Zone (Dental Numbing)</span>
           </div>
         </div>
-        <span className="font-mono text-[10px] text-slate-500">Auto-allocated via Tokio Graph</span>
+        <span className="font-mono text-[10px] text-[#91918c]">Auto-allocated via Tokio Graph</span>
       </div>
     </div>
   );

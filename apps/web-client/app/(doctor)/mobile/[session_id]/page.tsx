@@ -322,7 +322,7 @@ function DoctorMobileContent() {
       {/* Centered iOS Viewport Shell (390px - 440px) */}
       <div className="w-full max-w-md min-h-screen flex flex-col pb-28 relative z-10 px-4 pt-3 space-y-4">
         {/* iOS Header Strip with Clinician Identity */}
-        <header className="glass-panel p-4 flex items-center justify-between border-t border-white/20">
+        <header className="glass-panel p-4 flex items-center justify-between border-t border-[#dadad3]">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#10B981] to-[#059669] flex items-center justify-center text-[#0B0C0E] font-extrabold text-sm shadow-md">
               DR
@@ -338,7 +338,7 @@ function DoctorMobileContent() {
           </div>
 
           {/* Segmented Mode Switcher */}
-          <div className="flex items-center bg-white/06 p-1 rounded-full border border-white/10">
+          <div className="flex items-center bg-white/06 p-1 rounded-full border border-[#dadad3]">
             <button
               onClick={() => {
                 setClinicalMode('OPERATORY_CHAIR_MODE');
@@ -347,7 +347,7 @@ function DoctorMobileContent() {
               className={`px-3 py-1 text-[11px] font-bold rounded-full transition-all ${
                 clinicalMode === 'OPERATORY_CHAIR_MODE'
                   ? 'bg-[#10B981] text-[#0B0C0E] shadow-sm'
-                  : 'text-stone-400 hover:text-white'
+                  : 'text-stone-400 hover:text-[#000000]'
               }`}
             >
               Dental
@@ -360,7 +360,7 @@ function DoctorMobileContent() {
               className={`px-3 py-1 text-[11px] font-bold rounded-full transition-all ${
                 clinicalMode === 'OPD_VELOCITY_MODE'
                   ? 'bg-[#10B981] text-[#0B0C0E] shadow-sm'
-                  : 'text-stone-400 hover:text-white'
+                  : 'text-stone-400 hover:text-[#000000]'
               }`}
             >
               GP OPD
@@ -389,7 +389,7 @@ function DoctorMobileContent() {
         {statusMessage && (
           <div className="glass-panel p-3 text-xs font-medium text-[#10B981] flex items-center justify-between border-t border-[#10B981]/30">
             <span>{statusMessage}</span>
-            <button onClick={() => setStatusMessage(null)} className="text-stone-400 hover:text-white ml-2">
+            <button onClick={() => setStatusMessage(null)} className="text-stone-400 hover:text-[#000000] ml-2">
               ✕
             </button>
           </div>
@@ -402,7 +402,7 @@ function DoctorMobileContent() {
               <ShieldAlert className="w-4 h-4 text-[#FF6B00] shrink-0 mt-0.5" />
               <span>{shadowAlertToast}</span>
             </div>
-            <button onClick={() => setShadowAlertToast(null)} className="text-amber-400 hover:text-white">
+            <button onClick={() => setShadowAlertToast(null)} className="text-amber-400 hover:text-[#000000]">
               ✕
             </button>
           </div>
@@ -457,7 +457,7 @@ function DoctorMobileContent() {
             {activePatient ? (
               <div className="space-y-4">
                 {/* Asymmetric Bento: Top Hero Summary Card */}
-                <div className="glass-panel p-6 space-y-4 border-t border-white/20">
+                <div className="glass-panel p-6 space-y-4 border-t border-[#dadad3]">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <span className="text-[10px] uppercase font-bold tracking-wider text-stone-400">
@@ -472,7 +472,7 @@ function DoctorMobileContent() {
                     </div>
 
                     {/* Prominent Tabular Token Metric Badge */}
-                    <div className="glass-panel-nested px-4 py-2 text-center border-t border-white/20">
+                    <div className="glass-panel-nested px-4 py-2 text-center border-t border-[#dadad3]">
                       <div className="text-2xl font-extrabold tracking-tight text-white font-mono tabular-nums leading-none">
                         {activePatient.token_display}
                       </div>
@@ -507,7 +507,7 @@ function DoctorMobileContent() {
                       className={`px-3 py-1 rounded-full text-[10px] font-bold border transition-all flex items-center gap-1 ${
                         hasSignedConsent
                           ? 'bg-[#10B981]/15 text-[#10B981] border-[#10B981]/30'
-                          : 'bg-white/06 text-stone-300 border-white/10 hover:bg-white/12'
+                          : 'bg-white/06 text-stone-300 border-[#dadad3] hover:bg-white/12'
                       }`}
                     >
                       <Shield className="w-3 h-3" />
@@ -640,21 +640,21 @@ function DoctorMobileContent() {
                     <div className="grid grid-cols-3 gap-2">
                       <button
                         onClick={() => handleSendForDiagnostics('Blood Sugar')}
-                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-[#000000]"
                       >
                         <Droplet className="w-4 h-4 text-rose-400 mx-auto mb-1" />
                         <span>Lab Test</span>
                       </button>
                       <button
                         onClick={() => handleSendForDiagnostics('12-Lead ECG')}
-                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-[#000000]"
                       >
                         <Activity className="w-4 h-4 text-[#3B82F6] mx-auto mb-1" />
                         <span>ECG</span>
                       </button>
                       <button
                         onClick={() => handleSendForDiagnostics('Nebulizer')}
-                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-white"
+                        className="glass-panel-nested p-2.5 text-center text-xs font-medium text-stone-300 hover:text-[#000000]"
                       >
                         <Zap className="w-4 h-4 text-[#FF6B00] mx-auto mb-1" />
                         <span>Nebulizer</span>
@@ -752,7 +752,7 @@ function DoctorMobileContent() {
             <button
               onClick={handleCompleteAndSterilize}
               disabled={!activePatient}
-              className="h-11 px-4 rounded-full bg-white/08 hover:bg-white/14 disabled:opacity-30 text-white font-bold text-xs flex items-center gap-1.5 border border-white/10 active:scale-95 transition-all"
+              className="h-11 px-4 rounded-full bg-white/08 hover:bg-white/14 disabled:opacity-30 text-white font-bold text-xs flex items-center gap-1.5 border border-[#dadad3] active:scale-95 transition-all"
             >
               <Check className="w-4 h-4 text-[#10B981]" />
               <span>Done</span>
