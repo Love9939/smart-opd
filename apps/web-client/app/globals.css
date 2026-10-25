@@ -1,23 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --canvas: #0B0C0E;
-  --canvas-surface: #111318;
-  --ink-primary: #F4F4F5;
-  --ink-secondary: #94A3B8;
-  --ink-muted: #64748B;
-  --accent-emerald: #10B981;
-  --accent-emerald-tint: rgba(16, 185, 129, 0.12);
-  --accent-amber: #FF6B00;
-  --accent-amber-tint: rgba(255, 107, 0, 0.12);
+  --canvas: #ffffff;
+  --surface-soft: #fbfbf9;
+  --surface-card: #f6f6f3;
+  --surface-elevated: #ffffff;
+  --surface-dark: #262622;
+  --secondary-bg: #e5e5e0;
+  --secondary-pressed: #c8c8c1;
+  --hairline: #dadad3;
+  --hairline-soft: #e5e5e0;
+  --primary: #e60023;
+  --primary-pressed: #cc001f;
+  --ink: #000000;
+  --ink-soft: #211922;
+  --body: #33332e;
+  --charcoal: #262622;
+  --mute: #62625b;
+  --ash: #91918c;
+  --stone: #c8c8c1;
+  --success-deep: #103c25;
+  --success-pale: #c7f0da;
+  --error: #9e0a0a;
+  --error-deep: #cc001f;
+  --focus-outer: #435ee5;
+  --focus-inner: #ffffff;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-surface-soft: var(--surface-soft);
+  --color-surface-card: var(--surface-card);
+  --color-primary: var(--primary);
+  --color-primary-pressed: var(--primary-pressed);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-mute: var(--mute);
+  --color-hairline: var(--hairline);
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
 }
 
 body {
-  background-color: var(--canvas);
-  color: var(--ink-primary);
-  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--surface-soft);
+  color: var(--body);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Warm-cream Pinterest-style custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #fbfbf9;
+}
+::-webkit-scrollbar-thumb {
+  background: #dadad3;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c8c8c1;
 }
 
 /* Tabular Numerals for metrics, timers, and counters */
@@ -26,57 +73,88 @@ body {
   font-feature-settings: "tnum";
 }
 
-/* Glassmorphic Surfaces with Specular Edge Highlights */
+/* Design Tokens & Card Classes based on DESIGN.md */
+.pin-card {
+  background-color: var(--surface-card);
+  border-radius: 16px;
+  border: 1px solid var(--hairline-soft);
+}
+
+.pin-card-white {
+  background-color: var(--canvas);
+  border-radius: 16px;
+  border: 1px solid var(--hairline);
+}
+
+.pin-modal {
+  background-color: var(--canvas);
+  border-radius: 32px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Glass & Surface Mappings adapted to DESIGN.md palette */
 .glass-panel {
-  background: rgba(18, 20, 26, 0.72);
-  backdrop-filter: blur(24px) saturate(190%);
-  -webkit-backdrop-filter: blur(24px) saturate(190%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 12px 32px -4px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1px solid var(--hairline);
   border-radius: 28px;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.04);
 }
 
 .glass-panel-nested {
-  background: rgba(26, 29, 38, 0.65);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline-soft);
   border-radius: 18px;
 }
 
 .glass-pill {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  background: var(--surface-card);
+  border: 1px solid var(--hairline);
   border-radius: 9999px;
 }
 
 .glass-dock {
-  background: rgba(18, 20, 26, 0.85);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-top: 1px solid rgba(255, 255, 255, 0.24);
-  box-shadow: 0 16px 40px -6px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--hairline);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.08);
 }
 
-/* Subtle Specular Top Lighting Accent */
-.specular-border {
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+/* Button variants based on DESIGN.md */
+.btn-primary-red {
+  background-color: var(--primary);
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 16px;
+  transition: background-color 0.15s ease-in-out;
+}
+.btn-primary-red:hover {
+  background-color: var(--primary-pressed);
 }
 
-/* Ambient depth glow utility */
-.ambient-glow {
-  position: absolute;
+.btn-secondary-cream {
+  background-color: var(--secondary-bg);
+  color: var(--ink);
+  font-weight: 700;
+  border-radius: 16px;
+  transition: background-color 0.15s ease-in-out;
+}
+.btn-secondary-cream:hover {
+  background-color: var(--secondary-pressed);
+}
+
+.btn-pill-filter {
   border-radius: 9999px;
-  filter: blur(90px);
-  pointer-events: none;
-  z-index: 0;
+  font-weight: 700;
+  font-size: 14px;
+  transition: all 0.15s ease-in-out;
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
 }

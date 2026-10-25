@@ -32,7 +32,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#020617",
+  themeColor: "#fbfbf9",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -47,9 +47,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-100 font-sans selection:bg-cyan-500 selection:text-slate-950">
+      <body className="min-h-full flex flex-col bg-[#fbfbf9] text-[#33332e] font-sans selection:bg-[#e60023] selection:text-white">
         {children}
         <PwaInstallPrompt />
       </body>
